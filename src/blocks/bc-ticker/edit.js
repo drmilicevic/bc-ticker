@@ -1,152 +1,106 @@
-import { useBlockProps } from '@wordpress/block-editor';
+import {InspectorControls,} from "@wordpress/block-editor";
+import {PanelBody, SelectControl, RangeControl } from "@wordpress/components";
+import {useEffect, useState} from "@wordpress/element";
 
-import { InspectorControls } from '@wordpress/block-editor';
-import { TextControl, PanelBody, PanelRow, DatePicker, SelectControl, RangeControl } from '@wordpress/components';
-import {useEffect, useState } from '@wordpress/element';
 const Edit = ({attributes, setAttributes}) => {
+    const [countries, setCountries] = useState([]);
+    const [leagues, setLeagues] = useState([]);
+    const [output, setOutput] = useState('');
 
-    const [leagues, setLeagues] = useState('');
-    const [countries, setCountries] = useState('');
-
-    const { dateFrom } = attributes;
+    useEffect(()=> {
+    if(attributes.sport === 'football' || attributes.sport === 'basketball') {
+        fetch(ajaxurl, {
+        method: "POST",
+        headers: new Headers( {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        } ),
+        body: `action=bc_get_countries&sport=${attributes.sport}`,
+    })
+        .then((response) => response.json())
+        .then(result => {
+        let wholeResult = JSON.parse(result.data);
+        wholeResult = wholeResult.result.map(country => {
+            return { value: country.country_key, label: country.country_name }
+        })
+        wholeResult.unshift({ value: 0, label: "Select Country"})
+        setCountries(wholeResult);
+        });
+    }
+    }, [attributes.sport]);
 
     useEffect(() => {
-
-        fetch(`https://apiv2.allsportsapi.com/${attributes.sport}/?met=Countries&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd`)
-            .then((response) => response.json()).then((countries) => {
-            let options = [];
-
-            if (countries.result) {
-                countries.result.map((country) => {
-                    options.push({
-                        value: country.country_key,
-                        label: country.country_name
-                    })
-                })
-                options.unshift({
-                    value: '0',
-                    label: "Select Country"
-                })
-                setCountries(options);
-            }
+    if(attributes.sport && attributes.country != 0) {
+        fetch(ajaxurl,
+        {
+            method: "POST",
+            headers: new Headers( {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            } ),
+            body: `action=bc_get_leagues&sport=${attributes.sport}&country=${attributes.country}`,
         })
-            .catch((error) => {
-                console.log('Error');
-                console.error(error);
-            });
-    },[attributes.sport])
+        .then((response) => response.json())
+        .then(result => {
+            let wholeResult = JSON.parse(result.data);
+            wholeResult = wholeResult.result.map(league => {
+            return { value: league.league_key, label: league.league_name }
+            })
+            wholeResult.unshift({ value: 0, label: "Select League"})
+            setLeagues(wholeResult)
+        });
+        }
+    },[attributes.country]);
 
     useEffect(() => {
-        fetch(`https://apiv2.allsportsapi.com/${attributes.sport}/?met=Leagues&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd&countryId=${attributes.countryId}`)
-            .then((response) => response.json())
-            .then((leagues) => {
-                let options = [];
-
-                if (leagues.result) {
-                    leagues.result.map((league) => {
-                        options.push({
-                            value: league.league_key,
-                            label: league.league_name
-                        })
-                    })
-                    options.unshift({
-                        value: '0',
-                        label: "Select Leagues"
-                    })
-                    setLeagues(options);
-                }
+    fetch(ajaxurl,
+        {
+        method: "POST",
+        headers: new Headers( {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        } ),
+        body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}`,
         })
-            .catch((error) => {
-                console.log('Error');
-                console.error(error);
-            });
-    },[attributes.countryId])
+        .then((response) => response.json())
+        .then(result => {
+        setOutput(result);
+        });
+    }, [attributes]);
 
-    console.log(attributes.nextNumberOfDays);
-
-    return (
-        <div { ...useBlockProps()}>
-            <InspectorControls key="setting">
-                <PanelBody title="Ticker Settings" initialOpen={ false }>
-                    <TextControl
-                        label="Ticker title"
-                        onChange={ ( title ) => setAttributes( { title } ) }
-                        value={ attributes.title }
-                    />
-                    <SelectControl
-                        label="Sports"
-                        value={ attributes.sport }
-                        options={ [
-                            { label: 'Football', value: 'football' },
-                            { label: 'Basketball', value: 'basketball' },
-                        ] }
-                        onChange={ ( newSport ) => {
-                            setAttributes({
-                                sport: newSport,
-                                countryId: undefined,
-                                leagueId: undefined,
-                            });
-
-                            setLeagues('');
-
-                        }}
-
-                    />
-                    <SelectControl
-                        label="Countries"
-                        value ={ attributes.countryId}
-                        options={ countries }
-                        onChange={ ( countryId ) => setAttributes({
-                            countryId : countryId,
-                            leagueId: undefined,
-                        })}
-                    />
-                    <SelectControl
-                        label="Leagues"
-                        value ={ attributes.leagueId}
-                        options={ leagues }
-                        onChange={ ( leagueId ) => setAttributes({ leagueId })}
-                    />
-                </PanelBody>
-                <PanelBody title="Date Settings" initialOpen={ false }>
-                    <PanelRow>
-                        <DatePicker
-                            currentDate={ attributes.dateFrom }
-                            onChange={ ( dateFrom ) => {
-                                let date = new Date(dateFrom);
-                                let day = date.getDate();
-                                let month = date.getMonth()+1;
-
-                                if (month < 10) {
-                                    month = `0${month}`;
-                                }
-
-                                if (day < 10 ) {
-                                    day = `0${day}`;
-                                }
-
-                                let year = date.getFullYear();
-                                dateFrom = `${year}-${month}-${day}`;
-                                setAttributes( { dateFrom } )
-                            } }
-                        />
-                    </PanelRow>
-
-                    <PanelRow>
-                        <RangeControl
-                            label="Show for next number of days:"
-                            value={ attributes.nextNumberOfDays }
-                            min={ 1 }
-                            max={ 14 }
-                            onChange={ ( nextNumberOfDays ) => setAttributes({  nextNumberOfDays })}
-                        />
-                    </PanelRow>
-
-                </PanelBody>
-            </InspectorControls>
-            block
-        </div>
-    );
+  return ([
+    <div dangerouslySetInnerHTML={{__html: output}}/>,
+    <InspectorControls>
+      <PanelBody>
+        <SelectControl
+          label="Sport"
+          value={ attributes.sport }
+          options={ [
+            { label: 'Football', value: 'football' },
+            { label: 'Tennis', value: 'tennis' },
+            { label: 'Basketball', value: 'basketball' },
+          ] }
+          onChange={ ( sport ) => setAttributes({ sport }) }
+          __nextHasNoMarginBottom
+        />
+        {(attributes.sport === 'football' || attributes.sport === 'basketball') && <SelectControl
+          label="Countries"
+          value={ attributes.country }
+          options={ countries }
+          onChange={ ( country ) => setAttributes({ country }) }
+        />}
+        {attributes.country != 0 && <SelectControl
+          label="Leagues"
+          value={ attributes.league }
+          options={ leagues }
+          onChange={ ( league ) => setAttributes({ league }) }
+        />}
+        <RangeControl
+          label="Slider Speed"
+          value={ attributes.scrollamount }
+          onChange={ ( scrollamount ) => setAttributes( { scrollamount } ) }
+          min={ 2 }
+          max={ 10 }
+        />
+      </PanelBody>
+    </InspectorControls>
+  ])
 }
-
 export default Edit;

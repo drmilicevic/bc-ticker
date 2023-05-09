@@ -2,6 +2,142 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/blocks/bc-ticker/edit.js":
+/*!**************************************!*\
+  !*** ./src/blocks/bc-ticker/edit.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+
+const Edit = _ref => {
+  let {
+    attributes,
+    setAttributes
+  } = _ref;
+  const [countries, setCountries] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [leagues, setLeagues] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)([]);
+  const [output, setOutput] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (attributes.sport === 'football' || attributes.sport === 'basketball') {
+      fetch(ajaxurl, {
+        method: "POST",
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        body: `action=bc_get_countries&sport=${attributes.sport}`
+      }).then(response => response.json()).then(result => {
+        let wholeResult = JSON.parse(result.data);
+        wholeResult = wholeResult.result.map(country => {
+          return {
+            value: country.country_key,
+            label: country.country_name
+          };
+        });
+        wholeResult.unshift({
+          value: 0,
+          label: "Select Country"
+        });
+        setCountries(wholeResult);
+      });
+    }
+  }, [attributes.sport]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (attributes.sport && attributes.country != 0) {
+      fetch(ajaxurl, {
+        method: "POST",
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }),
+        body: `action=bc_get_leagues&sport=${attributes.sport}&country=${attributes.country}`
+      }).then(response => response.json()).then(result => {
+        let wholeResult = JSON.parse(result.data);
+        wholeResult = wholeResult.result.map(league => {
+          return {
+            value: league.league_key,
+            label: league.league_name
+          };
+        });
+        wholeResult.unshift({
+          value: 0,
+          label: "Select League"
+        });
+        setLeagues(wholeResult);
+      });
+    }
+  }, [attributes.country]);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    fetch(ajaxurl, {
+      method: "POST",
+      headers: new Headers({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}`
+    }).then(response => response.json()).then(result => {
+      setOutput(result);
+    });
+  }, [attributes]);
+  return [(0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    dangerouslySetInnerHTML: {
+      __html: output
+    }
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: "Sport",
+    value: attributes.sport,
+    options: [{
+      label: 'Football',
+      value: 'football'
+    }, {
+      label: 'Tennis',
+      value: 'tennis'
+    }, {
+      label: 'Basketball',
+      value: 'basketball'
+    }],
+    onChange: sport => setAttributes({
+      sport
+    }),
+    __nextHasNoMarginBottom: true
+  }), (attributes.sport === 'football' || attributes.sport === 'basketball') && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: "Countries",
+    value: attributes.country,
+    options: countries,
+    onChange: country => setAttributes({
+      country
+    })
+  }), attributes.country != 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.SelectControl, {
+    label: "Leagues",
+    value: attributes.league,
+    options: leagues,
+    onChange: league => setAttributes({
+      league
+    })
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.RangeControl, {
+    label: "Slider Speed",
+    value: attributes.scrollamount,
+    onChange: scrollamount => setAttributes({
+      scrollamount
+    }),
+    min: 2,
+    max: 10
+  })))];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Edit);
+
+/***/ }),
+
 /***/ "./src/blocks/bc-ticker/index.js":
 /*!***************************************!*\
   !*** ./src/blocks/bc-ticker/index.js ***!
@@ -12,15 +148,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./edit */ "./src/blocks/bc-ticker/edit.js");
 
 const BcTicker = {
   title: 'BC Ticker',
   icon: 'admin-page',
   category: 'bc-theme',
-  attributes: {},
-  edit: props => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "BC Ticker")
+  attributes: {
+    sport: {
+      type: "string",
+      default: "football"
+    },
+    country: {
+      type: "string",
+      default: "41"
+    },
+    league: {
+      type: "string",
+      default: ""
+    },
+    scrollamount: {
+      type: "number",
+      default: ""
+    }
+  },
+  edit: props => (0,_edit__WEBPACK_IMPORTED_MODULE_0__["default"])(props)
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (BcTicker);
 
@@ -71,6 +223,16 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["blockEditor"];
+
+/***/ }),
+
 /***/ "@wordpress/blocks":
 /*!********************************!*\
   !*** external ["wp","blocks"] ***!
@@ -78,6 +240,16 @@ __webpack_require__.r(__webpack_exports__);
 /***/ ((module) => {
 
 module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ ((module) => {
+
+module.exports = window["wp"]["components"];
 
 /***/ }),
 

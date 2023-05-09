@@ -1,4 +1,47 @@
 /*!***************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/style.scss ***!
   \***************************************************************************************************************************************************************************************************************************************/
+@keyframes ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+.ticker-wrap {
+  bottom: 0;
+  overflow: hidden;
+  height: 4rem;
+  background-color: rgba(20, 24, 28, 0.9);
+  padding-left: 100%;
+}
+.ticker-wrap .ticker {
+  display: inline-flex;
+  height: 4rem;
+  white-space: nowrap;
+  padding-right: 100%;
+  box-sizing: content-box;
+  animation-duration: 80s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-name: ticker;
+}
+.ticker-wrap .ticker__headline {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 1.25rem;
+  font-size: 1.25rem;
+  color: white;
+}
+.ticker-wrap .team-logo {
+  padding-right: 10px;
+}
+.ticker-wrap .fixture-match {
+  margin: auto;
+  padding: 10px;
+  font-size: 20px;
+}
 
+/*# sourceMappingURL=style-index.css.map*/
