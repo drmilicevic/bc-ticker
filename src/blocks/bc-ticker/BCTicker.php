@@ -6,6 +6,7 @@ class BCTicker
     private $blockName = 'bc-theme/bc-ticker';
     public function __construct()
     {
+        add_action('wp_ajax_get_experts_list_json', [$this, 'getExpertsListJson']);
         add_action('init', [$this, 'registerBlock']);
         add_action('wp_ajax_bc_get_countries', [$this, 'getCountries']);
         add_action('wp_ajax_bc_get_leagues', [$this, 'getLeagues']);
@@ -89,6 +90,19 @@ class BCTicker
         include("templates/default.php");
 
         return ob_get_clean();
+    }
+
+    public function sportsData() {
+        $sports = [
+            'football' => 'football',
+            'basketball' => 'basketball',
+            'tennis' => 'tennis',
+            'cricket' => 'cricket',
+        ];
+
+        wp_send_json_success([
+            'sports' => $sports
+        ]);
     }
 }
 new BCTicker();

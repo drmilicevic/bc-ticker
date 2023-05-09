@@ -130,8 +130,8 @@ const Edit = _ref => {
     onChange: scrollamount => setAttributes({
       scrollamount
     }),
-    min: 2,
-    max: 10
+    min: 20,
+    max: 200
   })))];
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Edit);
