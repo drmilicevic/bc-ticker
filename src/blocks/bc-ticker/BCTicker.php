@@ -55,7 +55,7 @@ class BCTicker
         $league = $_POST['league'] ?? null;
 
         $fixtures = wp_remote_get(
-            sprintf('https://apiv2.allsportsapi.com/%s/?met=Fixtures&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd&countryId=%s&leagueId=%s&from=%s&to=%s', $sport, $country, $league, date("Y-m-d"), date('Y-m-d', strtotime("+1 day")))
+            sprintf('https://apiv2.allsportsapi.com/%s/?met=Fixtures&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd&countryId=%s&leagueId=%s&from=%s&to=%s', $sport, $country, $league, date("Y-m-d"), date('Y-m-d', strtotime("+30 days")))
         );
 
         $allFixtures = wp_remote_retrieve_body($fixtures);
@@ -63,7 +63,7 @@ class BCTicker
         ob_start();
 
         include("templates/default.php");
-        
+
         wp_send_json(ob_get_clean());
     }
 
