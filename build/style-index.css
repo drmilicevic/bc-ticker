@@ -1,6 +1,3 @@
-/*!***************************************************************************************************************************************************************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/style.scss ***!
-  \***************************************************************************************************************************************************************************************************************************************/
 @keyframes ticker {
   0% {
     transform: translate3d(0, 0, 0);
@@ -11,15 +8,15 @@
   }
 }
 .ticker-wrap {
+  width: 100%;
   bottom: 0;
-  overflow: hidden;
-  height: 4rem;
   background-color: rgba(20, 24, 28, 0.9);
   padding-left: 100%;
+  height: 100%;
 }
 .ticker-wrap .ticker {
+  height: 100%;
   display: inline-flex;
-  height: 4rem;
   white-space: nowrap;
   padding-right: 100%;
   box-sizing: content-box;
@@ -28,19 +25,22 @@
   animation-name: ticker;
 }
 .ticker-wrap .ticker__headline {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: 0 1.25rem;
-  font-size: 1.25rem;
+  padding: 0.6rem;
   color: white;
-}
-.ticker-wrap .team-logo {
-  padding-right: 10px;
+  height: 100%;
 }
 .ticker-wrap .fixture-match {
-  margin: auto;
-  padding: 10px;
-  font-size: 20px;
+  display: flex;
+}
+.ticker-wrap .fixture-match .home-team,
+.ticker-wrap .fixture-match .away-team {
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+  margin: 0 10px;
 }
 
 /*# sourceMappingURL=style-index.css.map*/
