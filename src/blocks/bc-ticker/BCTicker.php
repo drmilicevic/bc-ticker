@@ -10,6 +10,7 @@ class BCTicker
 
     public function __construct()
     {
+        add_action('wp_ajax_get_experts_list_json', [$this, 'getExpertsListJson']);
         add_action('init', [$this, 'registerBlock']);
     }
     
@@ -20,7 +21,7 @@ class BCTicker
                 register_block_type(
                     $this->blockName,
                     [
-                        'attributes'      => [],
+                        'attributes'      => ['sport', 'countryId', 'dateFrom', 'leagueId', 'title', 'nextNumberOfDays'],
                         'render_callback' => [$this, 'render'],
                     ]
                 );
@@ -30,7 +31,21 @@ class BCTicker
     
     public function render($attributes)
     {
-        return '';
+        extract($attributes);
+
+    }
+
+    public function sportsData() {
+        $sports = [
+            'football' => 'football',
+            'basketball' => 'basketball',
+            'tennis' => 'tennis',
+            'cricket' => 'cricket',
+        ];
+
+        wp_send_json_success([
+            'sports' => $sports
+        ]);
     }
 }
 new BCTicker();
