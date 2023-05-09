@@ -1,11 +1,24 @@
 import {InspectorControls,} from "@wordpress/block-editor";
-import {PanelBody, SelectControl, RangeControl } from "@wordpress/components";
+import {PanelBody, SelectControl, RangeControl, ColorPicker, FontSizePicker } from "@wordpress/components";
 import {useEffect, useState} from "@wordpress/element";
 
 const Edit = ({attributes, setAttributes}) => {
     const [countries, setCountries] = useState([]);
     const [leagues, setLeagues] = useState([]);
     const [output, setOutput] = useState('');
+
+    const preSetFontSizes = [
+        {
+            name:  'Small' ,
+            slug: 'small',
+            size: 12,
+        },
+        {
+            name:  'Big' ,
+            slug: 'big',
+            size: 26,
+        },
+    ];
 
     useEffect(()=> {
     if(attributes.sport === 'football' || attributes.sport === 'basketball') {
@@ -96,9 +109,27 @@ const Edit = ({attributes, setAttributes}) => {
           label="Slider Speed"
           value={ attributes.scrollamount }
           onChange={ ( scrollamount ) => setAttributes( { scrollamount } ) }
-          min={ 2 }
-          max={ 10 }
+          min={ 20 }
+          max={ 200 }
         />
+        {attributes.bgColor != 0 && <ColorPicker
+          color={attributes.bgColor}
+          onChange={( bgColor ) => setAttributes( { bgColor } )}
+          enableAlpha
+        />}
+          {attributes.textColor != 0 && <ColorPicker
+              color={attributes.textColor}
+              onChange={( textColor ) => setAttributes( { textColor } )}
+              enableAlpha
+          />}
+
+          {attributes.fontSize != 0 && <FontSizePicker
+              value={ attributes.fontSize }
+              fontSizes={ preSetFontSizes }
+              __nextHasNoMarginBottom
+              fallbackFontSize={ 12 }
+              onChange={( fontSize ) => setAttributes( { fontSize } )}
+          />}
       </PanelBody>
     </InspectorControls>
   ])

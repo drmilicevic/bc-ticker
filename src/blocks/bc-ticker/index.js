@@ -19,6 +19,18 @@ const BcTicker = {
     scrollamount: {
       type: "number",
       default: ""
+    },
+    bgColor: {
+      type: "string",
+      default: "#fff"
+    },
+    textColor: {
+      type: "string",
+      default: "#000"
+    },
+    fontSize: {
+      type: "string",
+      default: "12"
     }
   },
   edit: props => Edit(props)
