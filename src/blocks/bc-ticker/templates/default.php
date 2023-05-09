@@ -5,7 +5,13 @@ $fixturesObject = json_decode($allFixtures);
 $matches = $fixturesObject->result;
 ?>
 <div class="ticker-wrap">
-    <div class="ticker">
+    <div 
+        class="ticker"
+        style="   
+        -moz-animation-duration: <?php echo $attribues['scrollamount']; ?>;
+        -webkit-animation-duration: <?php echo $attribues['scrollamount']; ?>;
+                animation-duration: <?php echo $attribues['scrollamount']; ?>;"
+    >
         <?php foreach ($matches as $match) : ?>
             <div class="ticker__headline">
              <span class="fixture-match">

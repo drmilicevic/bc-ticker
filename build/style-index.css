@@ -23,7 +23,6 @@
   white-space: nowrap;
   padding-right: 100%;
   box-sizing: content-box;
-  animation-duration: 80s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-name: ticker;

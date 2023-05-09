@@ -96,8 +96,8 @@ const Edit = ({attributes, setAttributes}) => {
           label="Slider Speed"
           value={ attributes.scrollamount }
           onChange={ ( scrollamount ) => setAttributes( { scrollamount } ) }
-          min={ 2 }
-          max={ 10 }
+          min={ 20 }
+          max={ 200 }
         />
       </PanelBody>
     </InspectorControls>

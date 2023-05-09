@@ -1,4 +1,4 @@
-$lapse: 80s;
+// $lapse: 80s;
 @-webkit-keyframes ticker {
     0% {
         -webkit-transform: translate3d(0, 0, 0);
@@ -40,10 +40,7 @@ $lapse: 80s;
         white-space: nowrap;
         padding-right: 100%;
         box-sizing: content-box;
-        
-        -moz-animation-duration: $lapse;
-        -webkit-animation-duration: $lapse;
-                animation-duration: $lapse;
+     
         -moz-animation-timing-function: linear;
         -webkit-animation-timing-function: linear;
                 animation-timing-function: linear;
