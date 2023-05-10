@@ -76,6 +76,7 @@ class BCTicker
         $bgColor = $_POST['bgColor'] ?? '';
         $fontSize = $_POST['fontSize'] ?? '12';
         $textColor = $_POST['textColor'] ?? '';
+        $nextNumberOfDays = $_POST['nextNumberOfDays'] ?? '2';
 
         $url = $this->apiUrl . $sport . '/?';
 
@@ -85,7 +86,7 @@ class BCTicker
             'countryId' => $country,
             'leagueId' => $league,
             'from' => date("Y-m-d"),
-            'to' => date('Y-m-d', strtotime("+30 days"))
+            'to' => date('Y-m-d', strtotime( "+" . $nextNumberOfDays . " days"))
         ];
         $fixtures = wp_remote_get($url . http_build_query($params));
 
@@ -107,6 +108,7 @@ class BCTicker
         $bgColor = $attributes['bgColor'] ?? '';
         $fontSize = $attributes['fontSize'] ?? '';
         $textColor = $attributes['textColor'] ?? '';
+        $nextNumberOfDays = $attributes['nextNumberOfDays'] ?? '2';
 
         $url = $this->apiUrl . $sport . '/?';
 
@@ -116,7 +118,7 @@ class BCTicker
             'countryId' => $country,
             'leagueId' => $league,
             'from' => date("Y-m-d"),
-            'to' => date('Y-m-d', strtotime("+30 days"))
+            'to' => date('Y-m-d', strtotime( "+" . $nextNumberOfDays . " days"))
         ];
         $fixtures = wp_remote_get($url . http_build_query($params));
 

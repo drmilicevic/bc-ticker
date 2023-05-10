@@ -34,7 +34,7 @@ const BcTicker = {
     },
     nextNumberOfDays: {
       type: 'number',
-      default: 1
+      default: 2
     }
   },
   edit: props => Edit(props)
