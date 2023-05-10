@@ -182,10 +182,13 @@ class BCTicker
         );
         $matchOddsBody = wp_remote_retrieve_body($matchOddsGet);
         $matchOddsJson = json_decode($matchOddsBody);
-        $odds = $matchOddsJson->result->$matchId->$bet;
+        $rawOdds = $matchOddsJson->result->$matchId->$bet;
+
+        $homeOdds = (array)$rawOdds->Home;
+        $awayOdds = (array)$rawOdds->Away;
+        $odds = array_merge_recursive($homeOdds, $awayOdds);
 
         ob_start();
-
 
         include("templates/odds.php");
 
@@ -194,7 +197,8 @@ class BCTicker
         wp_send_json_success([
             'output'=> $output,
             'matchId' => $matchId,
-            'matchOddsBody' => $odds
+            'matchOddsBody' => $odds,
+            'result' => $result
         ]);
     }
 }

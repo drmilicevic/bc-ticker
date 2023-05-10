@@ -15,15 +15,13 @@ teams.forEach((team) => {
                 } ),
                 body: `action=bc_get_roster&teamId=${teamId}`,
             })
-                .then((response) => response.json())
-                .then(result => {
-                    const teamRoster = result.data.output;
-                    console.log(teamRoster);
-                    modalTitle.innerHTML = "Team Roster";
+            .then((response) => response.json())
+            .then(result => {
+                const teamRoster = result.data.output;
+                modalTitle.innerHTML = "Team Roster";
+                modalBody.innerHTML = teamRoster;
 
-                    modalBody.innerHTML = teamRoster;
-
-                });
+            });
         }
 
         if(sport == "basketball") {
@@ -36,10 +34,8 @@ teams.forEach((team) => {
             })
                 .then((response) => response.json())
                 .then(result => {
-                    console.log(result);
                     modalTitle.innerHTML = "Match Odds";
                     modalBody.innerHTML = result.data.output;
-
                 }) ;
         }
     })
