@@ -11,6 +11,15 @@ class BCTicker
         add_action('wp_ajax_bc_get_countries', [$this, 'getCountries']);
         add_action('wp_ajax_bc_get_leagues', [$this, 'getLeagues']);
         add_action('wp_ajax_bc_get_matches', [$this, 'getMatches']);
+        add_action('wp_ajax_bc_get_roster',[$this, 'getTeamsRoster']);
+        add_action( 'wp_enqueue_scripts', [$this,'enqueScripts'] );
+    }
+
+    public function enqueScripts() {
+        wp_enqueue_script( 'teamModal', WP_PLUGIN_URL . '/bc-ticker/src/blocks/bc-ticker/components/teamModal.js', array(), '1.0.0', true );
+        wp_localize_script( 'teamModal', 'ticker_ajax', array(
+            'ajaxurl' => admin_url( 'admin-ajax.php' ),
+        ) );
     }
     public function registerBlock()
     {
@@ -110,6 +119,31 @@ class BCTicker
 
         wp_send_json_success([
             'sports' => $sports
+        ]);
+    }
+
+    public function getTeamsRoster() {
+        $teamId = $_POST['teamId'];
+
+        $homeTeamRosterGet = wp_remote_get(
+            'https://apiv2.allsportsapi.com/football/?&met=Teams&teamId='.$teamId.'&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd'
+        );
+        $homeTeamRoster = wp_remote_retrieve_body($homeTeamRosterGet);
+
+        $homeTeam = json_decode($homeTeamRoster);
+        $homeTeamRoster =$homeTeam->result;
+        $homeTeamPlayers = $homeTeamRoster[0]->players;
+
+        ob_start();
+
+        include("templates/player.php");
+
+        $output = ob_get_clean();
+        $title = '';
+
+        wp_send_json_success([
+            'title' => $title,
+            'output'=> $output
         ]);
     }
 }

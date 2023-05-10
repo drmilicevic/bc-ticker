@@ -222,7 +222,7 @@ const Edit = _ref => {
     size: 26
   }];
   Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    if (attributes.sport === 'football' || attributes.sport === 'basketball') {
+    if (attributes.sport) {
       fetch(ajaxurl, {
         method: "POST",
         headers: new Headers({
@@ -292,9 +292,6 @@ const Edit = _ref => {
       label: 'Football',
       value: 'football'
     }, {
-      label: 'Tennis',
-      value: 'tennis'
-    }, {
       label: 'Basketball',
       value: 'basketball'
     }],
@@ -302,7 +299,7 @@ const Edit = _ref => {
       sport
     }),
     __nextHasNoMarginBottom: true
-  }), (attributes.sport === 'football' || attributes.sport === 'basketball') && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["SelectControl"], {
+  }), attributes.sport && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["SelectControl"], {
     label: "Countries",
     value: attributes.country,
     options: countries,
