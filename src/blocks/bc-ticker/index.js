@@ -18,15 +18,15 @@ const BcTicker = {
     },
     scrollamount: {
       type: "number",
-      default: ""
+      default: 20
     },
     bgColor: {
       type: "string",
-      default: "#fff"
+      default: "#000"
     },
     textColor: {
       type: "string",
-      default: "#000"
+      default: "#FFF"
     },
     fontSize: {
       type: "string",

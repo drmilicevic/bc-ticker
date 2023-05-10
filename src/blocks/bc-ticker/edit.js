@@ -2,10 +2,19 @@ import {InspectorControls,} from "@wordpress/block-editor";
 import {PanelBody, SelectControl, RangeControl, ColorPicker, FontSizePicker } from "@wordpress/components";
 import {useEffect, useState} from "@wordpress/element";
 
+let debounceTimeout = null;
 const Edit = ({attributes, setAttributes}) => {
     const [countries, setCountries] = useState([]);
     const [leagues, setLeagues] = useState([]);
     const [output, setOutput] = useState('');
+
+    const debounce = (attributeName, attributeValue) => {
+      clearTimeout(debounceTimeout);
+      setAttributes({[attributeName]: attributeValue});
+      debounceTimeout = setTimeout(() => {
+        setAttributes({ 'debounce': [].concat(attributeName) });
+      }, 700);
+    }
 
     const preSetFontSizes = [
         {
@@ -64,19 +73,20 @@ const Edit = ({attributes, setAttributes}) => {
     },[attributes.country]);
 
     useEffect(() => {
-    fetch(ajaxurl,
+      console.log(attributes.debounce);
+      fetch(ajaxurl,
         {
         method: "POST",
         headers: new Headers( {
             'Content-Type': 'application/x-www-form-urlencoded',
         } ),
-        body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}`,
+        body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}&scrollamount=${attributes.scrollamount}&bgColor=${attributes.bgColor}&fontSize=${attributes.fontSize}&textColor=${attributes.textColor}`,
         })
         .then((response) => response.json())
         .then(result => {
         setOutput(result);
         });
-    }, [attributes]);
+    }, [attributes.debounce]);
 
   return ([
     <div dangerouslySetInnerHTML={{__html: output}}/>,
@@ -108,28 +118,29 @@ const Edit = ({attributes, setAttributes}) => {
         <RangeControl
           label="Slider Speed"
           value={ attributes.scrollamount }
-          onChange={ ( scrollamount ) => setAttributes( { scrollamount } ) }
+          onChange={ ( scrollamount ) => debounce('scrollamount', scrollamount) }
           min={ 20 }
           max={ 200 }
         />
-        {attributes.bgColor != 0 && <ColorPicker
+        <p>Background Color</p>
+        <ColorPicker
           color={attributes.bgColor}
-          onChange={( bgColor ) => setAttributes( { bgColor } )}
+          onChange={( bgColor ) => debounce('bgColor', bgColor) }
           enableAlpha
-        />}
-          {attributes.textColor != 0 && <ColorPicker
-              color={attributes.textColor}
-              onChange={( textColor ) => setAttributes( { textColor } )}
-              enableAlpha
-          />}
-
-          {attributes.fontSize != 0 && <FontSizePicker
-              value={ attributes.fontSize }
-              fontSizes={ preSetFontSizes }
-              __nextHasNoMarginBottom
-              fallbackFontSize={ 12 }
-              onChange={( fontSize ) => setAttributes( { fontSize } )}
-          />}
+        />
+        <p>Text Color</p>
+        <ColorPicker
+            color={attributes.textColor}
+            onChange={( textColor ) => debounce('textColor', textColor) }
+            enableAlpha
+        />
+        <FontSizePicker
+            value={ attributes.fontSize }
+            fontSizes={ preSetFontSizes }
+            __nextHasNoMarginBottom
+            fallbackFontSize={ 12 }
+            onChange={( fontSize ) => setAttributes( { fontSize } )}
+        />
       </PanelBody>
     </InspectorControls>
   ])

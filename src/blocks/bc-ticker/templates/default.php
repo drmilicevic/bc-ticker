@@ -1,35 +1,31 @@
 <?php
-if (!empty($allFixtures)) {
-
 $fixturesObject = json_decode($allFixtures);
-$matches = $fixturesObject->result;
+$matches = !empty($fixturesObject->result) ? $fixturesObject->result : [];
+
+if(!empty($matches)) {
 ?>
-<div class="ticker-wrap" style="background-color: <?php echo $attributes['bgColor'];?>">
+<div class="ticker-wrap" style="background-color: <?php echo $bgColor;?>">
     <div 
         class="ticker"
         style="   
-        -moz-animation-duration: <?php echo $attributes['scrollamount']; ?>s;
-        -webkit-animation-duration: <?php echo $attributes['scrollamount']; ?>s;
-                animation-duration: <?php echo $attributes['scrollamount']; ?>s;"
+        -moz-animation-duration: <?php echo $scrollamount; ?>s;
+        -webkit-animation-duration: <?php echo $scrollamount; ?>s;
+                animation-duration: <?php echo $scrollamount; ?>s;"
     >
         <?php foreach ($matches as $match) : ?>
             <div class="ticker__headline" >
-                <div class="fixture-match" >
+                <div class="fixture-match" style="font-size: <?php echo $fontSize; ?>; color: <?php echo $textColor; ?>;">
                     <div class="home-team">
-                        <img class="team-logo" src="<?php echo $match->home_team_logo; ?>" width="25" height="25">
-                        <span style="font-size: <?php echo $attributes['fontSize'];?>
-                                    color: <?php echo $attributes['textColor']; ?>;
-                                "><?php echo $match->event_home_team; ?></span>
+                        <img class="team-logo" src="<?php echo $match->home_team_logo; ?>" width="25">
+                        <span><?php echo $match->event_home_team; ?></span>
                     </div>
-                    vs
+                    &nbsp;vs&nbsp;
                     <div class="away-team">
-                         <span style="font-size: <?php echo $attributes['fontSize'];?>
-                                 color: <?php echo $attributes['textColor']; ?>;
-                                 "><?php echo $match->event_away_team; ?></span>
-                        <img class="team-logo" src="<?php echo $match->away_team_logo; ?>" width="25" height="25">
+                         <span><?php echo $match->event_away_team; ?></span>
+                        <img class="team-logo" src="<?php echo $match->away_team_logo; ?>" width="25">
                     </div>
                 </div>
-                <div class="fixture-match fixture-match-time">
+                <div class="fixture-match fixture-match-time" style="color: <?php echo $textColor; ?>;">
                     <?php echo $match->event_date; ?>|<?php echo $match->event_time; ?>
                 </div>
             </div>
@@ -37,4 +33,6 @@ $matches = $fixturesObject->result;
     </div>
 </div>
 <?php
+} else {
+    echo "<div>Sorry. There are no results.</div>";
 }

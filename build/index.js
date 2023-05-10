@@ -192,6 +192,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+let debounceTimeout = null;
 const Edit = _ref => {
   let {
     attributes,
@@ -200,6 +201,17 @@ const Edit = _ref => {
   const [countries, setCountries] = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useState"])([]);
   const [leagues, setLeagues] = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useState"])([]);
   const [output, setOutput] = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useState"])('');
+  const debounce = (attributeName, attributeValue) => {
+    clearTimeout(debounceTimeout);
+    setAttributes({
+      [attributeName]: attributeValue
+    });
+    debounceTimeout = setTimeout(() => {
+      setAttributes({
+        'debounce': [].concat(attributeName)
+      });
+    }, 700);
+  };
   const preSetFontSizes = [{
     name: 'Small',
     slug: 'small',
@@ -258,16 +270,17 @@ const Edit = _ref => {
     }
   }, [attributes.country]);
   Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    console.log(attributes.debounce);
     fetch(ajaxurl, {
       method: "POST",
       headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded'
       }),
-      body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}`
+      body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}&scrollamount=${attributes.scrollamount}&bgColor=${attributes.bgColor}&fontSize=${attributes.fontSize}&textColor=${attributes.textColor}`
     }).then(response => response.json()).then(result => {
       setOutput(result);
     });
-  }, [attributes]);
+  }, [attributes.debounce]);
   return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     dangerouslySetInnerHTML: {
       __html: output
@@ -306,24 +319,18 @@ const Edit = _ref => {
   }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["RangeControl"], {
     label: "Slider Speed",
     value: attributes.scrollamount,
-    onChange: scrollamount => setAttributes({
-      scrollamount
-    }),
+    onChange: scrollamount => debounce('scrollamount', scrollamount),
     min: 20,
     max: 200
-  }), attributes.bgColor != 0 && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["ColorPicker"], {
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Background Color"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["ColorPicker"], {
     color: attributes.bgColor,
-    onChange: bgColor => setAttributes({
-      bgColor
-    }),
+    onChange: bgColor => debounce('bgColor', bgColor),
     enableAlpha: true
-  }), attributes.textColor != 0 && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["ColorPicker"], {
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Text Color"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["ColorPicker"], {
     color: attributes.textColor,
-    onChange: textColor => setAttributes({
-      textColor
-    }),
+    onChange: textColor => debounce('textColor', textColor),
     enableAlpha: true
-  }), attributes.fontSize != 0 && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["FontSizePicker"], {
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["FontSizePicker"], {
     value: attributes.fontSize,
     fontSizes: preSetFontSizes,
     __nextHasNoMarginBottom: true,
@@ -367,15 +374,15 @@ const BcTicker = {
     },
     scrollamount: {
       type: "number",
-      default: ""
+      default: 20
     },
     bgColor: {
       type: "string",
-      default: "#fff"
+      default: "#000"
     },
     textColor: {
       type: "string",
-      default: "#000"
+      default: "#FFF"
     },
     fontSize: {
       type: "string",

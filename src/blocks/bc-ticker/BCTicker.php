@@ -57,6 +57,11 @@ class BCTicker
         $sport = $_POST['sport'] ?? 'football';
         $country = $_POST['country'] ?? '41';
         $league = $_POST['league'] ?? null;
+        $scrollamount = $_POST['scrollamount'] ?? '';
+        $bgColor = $_POST['bgColor'] ?? '';
+        $fontSize = $_POST['fontSize'] ?? '12';
+        $textColor = $_POST['textColor'] ?? '';
+
 
         $fixtures = wp_remote_get(
             sprintf('https://apiv2.allsportsapi.com/%s/?met=Fixtures&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd&countryId=%s&leagueId=%s&from=%s&to=%s', $sport, $country, $league, date("Y-m-d"), date('Y-m-d', strtotime("+30 days")))
@@ -78,6 +83,8 @@ class BCTicker
         $league = $attributes['league'] ?? '';
         $scrollamount = $attributes['scrollamount'] ?? '';
         $bgColor = $attributes['bgColor'] ?? '';
+        $fontSize = $attributes['fontSize'] ?? '';
+        $textColor = $attributes['textColor'] ?? '';
 
         $fixtures = wp_remote_get(
             sprintf('https://apiv2.allsportsapi.com/%s/?met=Fixtures&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd&countryId=%s&leagueId=%s&from=%s&to=%s', $sport, $country, $league, date("Y-m-d"), date('Y-m-d', strtotime("+30 days")))
