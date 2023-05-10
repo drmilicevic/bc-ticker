@@ -270,7 +270,6 @@ const Edit = _ref => {
     }
   }, [attributes.country]);
   Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    console.log(attributes.debounce);
     fetch(ajaxurl, {
       method: "POST",
       headers: new Headers({
@@ -280,7 +279,7 @@ const Edit = _ref => {
     }).then(response => response.json()).then(result => {
       setOutput(result);
     });
-  }, [attributes.debounce]);
+  }, [attributes.sport, attributes.country, attributes.league, attributes.debounce]);
   return [Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     dangerouslySetInnerHTML: {
       __html: output
@@ -398,7 +397,7 @@ const BcTicker = {
     },
     nextNumberOfDays: {
       type: 'number',
-      default: 1
+      default: 2
     }
   },
   edit: props => Object(_edit__WEBPACK_IMPORTED_MODULE_0__["default"])(props)

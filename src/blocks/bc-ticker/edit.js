@@ -73,7 +73,6 @@ const Edit = ({attributes, setAttributes}) => {
     },[attributes.country]);
 
     useEffect(() => {
-      console.log(attributes.debounce);
       fetch(ajaxurl,
         {
         method: "POST",
@@ -86,7 +85,7 @@ const Edit = ({attributes, setAttributes}) => {
         .then(result => {
         setOutput(result);
         });
-    }, [attributes.debounce]);
+    }, [attributes.sport, attributes.country, attributes.league, attributes.debounce]);
 
   return ([
     <div dangerouslySetInnerHTML={{__html: output}}/>,
