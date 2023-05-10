@@ -150,36 +150,38 @@ class BCTicker
 
     public function getTeamsRoster() {
         $teamId = $_POST['teamId'];
+        $url = $this->apiUrl . 'football/?';
+        $params = [
+            'met' => 'Teams',
+            'APIkey' => $this->apiKey,
+            'teamId' => $teamId,
+        ];
 
-        $teamRosterGet = wp_remote_get(
-            'https://apiv2.allsportsapi.com/football/?&met=Teams&teamId='.$teamId.'&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd'
-        );
+        $teamRosterGet = wp_remote_get($url . http_build_query($params));
         $teamRoster = wp_remote_retrieve_body($teamRosterGet);
-
         $team = json_decode($teamRoster);
-        $teamRoster =$team->result;
-        $teamPlayers = $teamRoster[0]->players;
+        $teamPlayers = $team->result[0]->players;
 
         ob_start();
 
         include("templates/player.php");
 
         $output = ob_get_clean();
-        $title = '';
 
-        wp_send_json_success([
-            'title' => $title,
-            'output'=> $output
-        ]);
+        wp_send_json_success(['output'=> $output]);
     }
 
     public function getBasketballOdds() {
         $bet = "Home/Away";
         $matchId = $_POST['matchId'];
-
-        $matchOddsGet = wp_remote_get(
-            'https://apiv2.allsportsapi.com/basketball/?&met=Odds&matchId=89988&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd'
-        );
+        $url = $this->apiUrl . 'basketball/?';
+        $params = [
+            'met' => 'Odds',
+            'APIkey' => $this->apiKey,
+            'matchId' => $matchId,
+        ];
+        
+        $matchOddsGet = wp_remote_get($url . http_build_query($params));
         $matchOddsBody = wp_remote_retrieve_body($matchOddsGet);
         $matchOddsJson = json_decode($matchOddsBody);
         $rawOdds = $matchOddsJson->result->$matchId->$bet;
