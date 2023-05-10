@@ -26,7 +26,8 @@ class BCTicker
                             'scrollamount',
                             'bgColor',
                             'textColor',
-                            'fontSize'
+                            'fontSize',
+                            'nextNumberOfDays'
                         ],
                         'render_callback' => [$this, 'render'],
                     ]

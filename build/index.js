@@ -317,6 +317,14 @@ const Edit = _ref => {
       league
     })
   }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["RangeControl"], {
+    label: "Show for next number of days:",
+    value: attributes.nextNumberOfDays,
+    min: 1,
+    max: 14,
+    onChange: nextNumberOfDays => setAttributes({
+      nextNumberOfDays
+    })
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["RangeControl"], {
     label: "Slider Speed",
     value: attributes.scrollamount,
     onChange: scrollamount => debounce('scrollamount', scrollamount),
@@ -387,6 +395,10 @@ const BcTicker = {
     fontSize: {
       type: "string",
       default: "12"
+    },
+    nextNumberOfDays: {
+      type: 'number',
+      default: 1
     }
   },
   edit: props => Object(_edit__WEBPACK_IMPORTED_MODULE_0__["default"])(props)
