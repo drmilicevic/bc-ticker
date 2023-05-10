@@ -83,7 +83,6 @@ class BCTicker
         $params = [
             'met' => 'Fixtures',
             'APIkey' => $this->apiKey,
-            'countryId' => $country,
             'leagueId' => $league,
             'from' => date("Y-m-d"),
             'to' => date('Y-m-d', strtotime( "+" . $nextNumberOfDays . " days"))
@@ -108,14 +107,13 @@ class BCTicker
         $bgColor = $attributes['bgColor'] ?? '';
         $fontSize = $attributes['fontSize'] ?? '';
         $textColor = $attributes['textColor'] ?? '';
-        $nextNumberOfDays = $attributes['nextNumberOfDays'] ?? '2';
+        $nextNumberOfDays = $attributes['nextNumberOfDays'] ?? '30';
 
         $url = $this->apiUrl . $sport . '/?';
 
         $params = [
             'met' => 'Fixtures',
             'APIkey' => $this->apiKey,
-            'countryId' => $country,
             'leagueId' => $league,
             'from' => date("Y-m-d"),
             'to' => date('Y-m-d', strtotime( "+" . $nextNumberOfDays . " days"))
