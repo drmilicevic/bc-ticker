@@ -116,6 +116,13 @@ const Edit = ({attributes, setAttributes}) => {
           onChange={ ( league ) => setAttributes({ league }) }
         />}
         <RangeControl
+          label="Show for next number of days:"
+          value={ attributes.nextNumberOfDays }
+          min={ 1 }
+          max={ 14 }
+          onChange={ ( nextNumberOfDays ) => setAttributes({  nextNumberOfDays })}
+        />
+        <RangeControl
           label="Slider Speed"
           value={ attributes.scrollamount }
           onChange={ ( scrollamount ) => debounce('scrollamount', scrollamount) }

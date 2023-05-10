@@ -31,6 +31,10 @@ const BcTicker = {
     fontSize: {
       type: "string",
       default: "12"
+    },
+    nextNumberOfDays: {
+      type: 'number',
+      default: 1
     }
   },
   edit: props => Edit(props)
