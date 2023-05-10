@@ -14,7 +14,13 @@ class BCTicker
         add_action('wp_ajax_bc_get_countries', [$this, 'getCountries']);
         add_action('wp_ajax_bc_get_leagues', [$this, 'getLeagues']);
         add_action('wp_ajax_bc_get_matches', [$this, 'getMatches']);
+        add_action('wp_ajax_bc_get_roster',[$this, 'getTeamsRoster']);
+        add_action('wp_ajax_nopriv_bc_get_roster',[$this, 'getTeamsRoster']);
+        add_action('wp_ajax_bc_get_basketball_odds',[$this, 'getBasketballOdds']);
+        add_action('wp_ajax_nopriv_bc_get_basketball_odds',[$this, 'getBasketballOdds']);
     }
+
+
     public function registerBlock()
     {
         if (function_exists('register_block_type') && class_exists('WP_Block_Type_Registry')) {
@@ -139,6 +145,56 @@ class BCTicker
 
         wp_send_json_success([
             'sports' => $sports
+        ]);
+    }
+
+    public function getTeamsRoster() {
+        $teamId = $_POST['teamId'];
+
+        $teamRosterGet = wp_remote_get(
+            'https://apiv2.allsportsapi.com/football/?&met=Teams&teamId='.$teamId.'&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd'
+        );
+        $teamRoster = wp_remote_retrieve_body($teamRosterGet);
+
+        $team = json_decode($teamRoster);
+        $teamRoster =$team->result;
+        $teamPlayers = $teamRoster[0]->players;
+
+        ob_start();
+
+        include("templates/player.php");
+
+        $output = ob_get_clean();
+        $title = '';
+
+        wp_send_json_success([
+            'title' => $title,
+            'output'=> $output
+        ]);
+    }
+
+    public function getBasketballOdds() {
+        $bet = "Home/Away";
+        $matchId = $_POST['matchId'];
+
+        $matchOddsGet = wp_remote_get(
+            'https://apiv2.allsportsapi.com/basketball/?&met=Odds&matchId=89988&APIkey=c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd'
+        );
+        $matchOddsBody = wp_remote_retrieve_body($matchOddsGet);
+        $matchOddsJson = json_decode($matchOddsBody);
+        $odds = $matchOddsJson->result->$matchId->$bet;
+
+        ob_start();
+
+
+        include("templates/odds.php");
+
+        $output = ob_get_clean();
+
+        wp_send_json_success([
+            'output'=> $output,
+            'matchId' => $matchId,
+            'matchOddsBody' => $odds
         ]);
     }
 }

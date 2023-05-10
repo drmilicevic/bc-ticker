@@ -30,7 +30,7 @@ const Edit = ({attributes, setAttributes}) => {
     ];
 
     useEffect(()=> {
-    if(attributes.sport === 'football' || attributes.sport === 'basketball') {
+    if(attributes.sport) {
         fetch(ajaxurl, {
         method: "POST",
         headers: new Headers( {
@@ -96,13 +96,12 @@ const Edit = ({attributes, setAttributes}) => {
           value={ attributes.sport }
           options={ [
             { label: 'Football', value: 'football' },
-            { label: 'Tennis', value: 'tennis' },
             { label: 'Basketball', value: 'basketball' },
           ] }
           onChange={ ( sport ) => setAttributes({ sport }) }
           __nextHasNoMarginBottom
         />
-        {(attributes.sport === 'football' || attributes.sport === 'basketball') && <SelectControl
+        {(attributes.sport) && <SelectControl
           label="Countries"
           value={ attributes.country }
           options={ countries }

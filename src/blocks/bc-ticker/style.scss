@@ -31,6 +31,7 @@
     background-color: rgba(#14181c, 0.9);
     padding-left: 100%;
     height: 100%;
+    overflow: hidden;
 
 		&:hover {
 			.ticker {
@@ -91,41 +92,35 @@
     }
 }
 
-#modal {
-  position: absolute;
-  top: 25vh;
-  left: 25vw;
-  background-color: white;
-  width: 50vw;
-  height: 50vh;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding: 20px;
-  overflow: hidden;
-  -webkit-box-shadow: -2px 6px 110px 0px rgba(173,173,173,1);
-  -moz-box-shadow: -2px 6px 110px 0px rgba(173,173,173,1);
-  box-shadow: -2px 6px 110px 0px rgba(173,173,173,1);
 
-  #players {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    max-height: calc(50vh - 100px);
-    overflow-x: auto;
-    width: 100%;
+.modal-content {
+}
+.modal {
 
-    div {
-      padding: 0 20px;
-      min-width: 220px;
-    }
+  &-content {
+    max-height: 600px !important;
   }
 
-  #close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 10px;
-    cursor: pointer;
+  &-header {
+    max-height: 100px;
+  }
+
+  &--body , .roster {
+    max-height: 500px;
+  }
+
+}
+
+.roster {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+
+  .player-data {
+    .player-info {
+      padding: 1rem;
+    }
   }
 }
