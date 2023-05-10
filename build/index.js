@@ -275,7 +275,7 @@ const Edit = _ref => {
       headers: new Headers({
         'Content-Type': 'application/x-www-form-urlencoded'
       }),
-      body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}&scrollamount=${attributes.scrollamount}&bgColor=${attributes.bgColor}&fontSize=${attributes.fontSize}&textColor=${attributes.textColor}`
+      body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}&scrollamount=${attributes.scrollamount}&bgColor=${attributes.bgColor}&fontSize=${attributes.fontSize}&textColor=${attributes.textColor}&nextNumberOfDays=${attributes.nextNumberOfDays}`
     }).then(response => response.json()).then(result => {
       setOutput(result);
     });
@@ -320,9 +320,7 @@ const Edit = _ref => {
     value: attributes.nextNumberOfDays,
     min: 1,
     max: 14,
-    onChange: nextNumberOfDays => setAttributes({
-      nextNumberOfDays
-    })
+    onChange: nextNumberOfDays => debounce('nextNumberOfDays', nextNumberOfDays)
   }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["RangeControl"], {
     label: "Slider Speed",
     value: attributes.scrollamount,
