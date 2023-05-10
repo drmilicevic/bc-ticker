@@ -76,13 +76,13 @@ class BCTicker
 
     public function getMatches() {
         $sport = $_POST['sport'] ?? 'football';
-        $country = $_POST['country'] ?? '41';
-        $league = $_POST['league'] ?? null;
-        $scrollamount = $_POST['scrollamount'] ?? '';
+        $country = $_POST['country'] ?? '44';
+        $league = $_POST['league'] ?? '152';
+        $scrollamount = $_POST['scrollamount'] ?? '80';
         $bgColor = $_POST['bgColor'] ?? '';
         $fontSize = $_POST['fontSize'] ?? '12';
         $textColor = $_POST['textColor'] ?? '';
-        $nextNumberOfDays = $_POST['nextNumberOfDays'] ?? '2';
+        $nextNumberOfDays = $_POST['nextNumberOfDays'] ?? '5';
 
         $url = $this->apiUrl . $sport . '/?';
 
@@ -107,13 +107,13 @@ class BCTicker
     public function render($attributes)
     {
         $sport = $attributes['sport'] ?? 'football';
-        $country = $attributes['country'] ?? '41';
-        $league = $attributes['league'] ?? '';
-        $scrollamount = $attributes['scrollamount'] ?? '';
+        $country = $attributes['country'] ?? '44';
+        $league = $attributes['league'] ?? '152';
+        $scrollamount = $attributes['scrollamount'] ?? '80';
         $bgColor = $attributes['bgColor'] ?? '';
         $fontSize = $attributes['fontSize'] ?? '';
         $textColor = $attributes['textColor'] ?? '';
-        $nextNumberOfDays = $attributes['nextNumberOfDays'] ?? '30';
+        $nextNumberOfDays = $attributes['nextNumberOfDays'] ?? '5';
 
         $url = $this->apiUrl . $sport . '/?';
 

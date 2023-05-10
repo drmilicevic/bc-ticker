@@ -10,15 +10,15 @@ const BcTicker = {
     },
     country: {
       type: "string",
-      default: "41"
+      default: "44"
     },
     league: {
       type: "string",
-      default: ""
+      default: "152"
     },
     scrollamount: {
       type: "number",
-      default: 20
+      default: 80
     },
     bgColor: {
       type: "string",
@@ -34,7 +34,7 @@ const BcTicker = {
     },
     nextNumberOfDays: {
       type: 'number',
-      default: 2
+      default: 5
     }
   },
   edit: props => Edit(props)
