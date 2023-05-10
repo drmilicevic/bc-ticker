@@ -15,6 +15,25 @@ class BlocksLoader
 
     public function loadAllBlocks()
     {
+        add_action('wp_enqueue_scripts', function(){
+            $apiKey = 'c48d0beffaba746a01c72aa7802d8e3cedd005f4471e488e542bb810b21c02fd';
+            $apiUrl = 'https://apiv2.allsportsapi.com/';
+
+            wp_enqueue_script(
+                'bc-show-team-info',
+                WP_PLUGIN_URL . '/' . Init::FOLDER . '/src/assets/js/show-team-info.js',
+                [],
+                false,
+                true
+            );
+            wp_localize_script( 'bc-show-team-info', 'ajaxObj',
+                array(
+                    'apiKey' => $apiKey,
+                    'apiUrl' => $apiUrl
+                )
+            );
+        });
+
         foreach($this->blocks  as $block){
             if($block['callback']) {
                 include_once(__DIR__ . "/blocks/{$block['name']}/{$block['callback']}.php");

@@ -4,7 +4,7 @@ $matches = !empty($fixturesObject->result) ? $fixturesObject->result : [];
 
 if(!empty($matches)) {
 ?>
-<div class="ticker-wrap" style="background-color: <?php echo $bgColor;?>">
+<div class="ticker-wrap" data-sport="<?php echo $sport; ?>" style="background-color: <?php echo $bgColor;?>">
     <div 
         class="ticker"
         style="   
@@ -15,12 +15,12 @@ if(!empty($matches)) {
         <?php foreach ($matches as $match) : ?>
             <div class="ticker__headline" >
                 <div class="fixture-match" style="font-size: <?php echo $fontSize; ?>; color: <?php echo $textColor; ?>;">
-                    <div class="home-team">
+                    <div class="home-team" data-team="<?php echo $match->home_team_key; ?>">
                         <img class="team-logo" src="<?php echo $match->home_team_logo; ?>" width="25">
                         <span><?php echo $match->event_home_team; ?></span>
                     </div>
                     &nbsp;vs&nbsp;
-                    <div class="away-team">
+                    <div class="away-team" data-team="<?php echo $match->away_team_key; ?>">
                          <span><?php echo $match->event_away_team; ?></span>
                         <img class="team-logo" src="<?php echo $match->away_team_logo; ?>" width="25">
                     </div>

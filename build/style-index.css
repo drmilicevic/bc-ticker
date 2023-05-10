@@ -40,10 +40,54 @@
 }
 .ticker-wrap .fixture-match .home-team,
 .ticker-wrap .fixture-match .away-team {
+  position: relative;
   display: flex;
   gap: 0.7rem;
   justify-content: center;
   margin: 0 10px;
+  cursor: pointer;
+}
+.ticker-wrap .fixture-match .home-team:hover,
+.ticker-wrap .fixture-match .away-team:hover {
+  text-decoration: underline;
+}
+.ticker-wrap .fixture-match .home-team span,
+.ticker-wrap .fixture-match .away-team span {
+  pointer-events: none;
+}
+
+#modal {
+  position: absolute;
+  top: 25vh;
+  left: 25vw;
+  background-color: white;
+  width: 50vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 20px;
+  overflow: hidden;
+  box-shadow: -2px 6px 110px 0px #adadad;
+}
+#modal #players {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: calc(50vh - 100px);
+  overflow-x: auto;
+  width: 100%;
+}
+#modal #players div {
+  padding: 0 20px;
+  min-width: 220px;
+}
+#modal #close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style-index.css.map*/
