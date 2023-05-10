@@ -73,10 +73,59 @@
 
         .home-team,
         .away-team {
+            position: relative;
             display: flex;
             gap: 0.7rem;
             justify-content: center;
             margin: 0 10px;
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            span {
+                pointer-events: none;
+            }
         }
     }
+}
+
+#modal {
+  position: absolute;
+  top: 25vh;
+  left: 25vw;
+  background-color: white;
+  width: 50vw;
+  height: 50vh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 20px;
+  overflow: hidden;
+  -webkit-box-shadow: -2px 6px 110px 0px rgba(173,173,173,1);
+  -moz-box-shadow: -2px 6px 110px 0px rgba(173,173,173,1);
+  box-shadow: -2px 6px 110px 0px rgba(173,173,173,1);
+
+  #players {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: calc(50vh - 100px);
+    overflow-x: auto;
+    width: 100%;
+
+    div {
+      padding: 0 20px;
+      min-width: 220px;
+    }
+  }
+
+  #close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    cursor: pointer;
+  }
 }
