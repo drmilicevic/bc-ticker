@@ -209,7 +209,7 @@ class BCTicker
             'APIkey' => $this->apiKey,
             'matchId' => $matchId,
         ];
-
+        
         try {
             $matchOddsGet = wp_remote_get($url . http_build_query($params));
             $matchOddsBody = wp_remote_retrieve_body($matchOddsGet);
