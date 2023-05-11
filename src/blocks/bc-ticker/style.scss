@@ -31,82 +31,82 @@
     transform: translate3d(0, 0, 0);
   }
 }
-  
+
 .ticker-wrap {
-    width: 100%;
-    bottom: 0;
-    background-color: rgba(#14181c, 0.9);
-    padding-left: 100%;
-    height: 100%;
-    overflow: hidden;
+  width: 100%;
+  bottom: 0;
+  background-color: rgba(#14181c, 0.9);
+  padding-left: 100%;
+  height: 100%;
+  overflow: hidden;
 
-		&:hover {
-			.ticker {
-				-webkit-animation-play-state: paused;
-				-moz-animation-play-state: paused;
-				-o-animation-play-state: paused;
-				animation-play-state: paused;
-			}
-		}
-
+  &:hover {
     .ticker {
-        height: 100%;
-        display: inline-flex;
-        white-space: nowrap;
-        padding-right: 100%;
-        box-sizing: content-box;
-     
-        -moz-animation-timing-function: linear;
-        -webkit-animation-timing-function: linear;
-                animation-timing-function: linear;
-        -moz-animation-iteration-count: infinite;
-        -webkit-animation-iteration-count: infinite; 
-                animation-iteration-count: infinite;
-        -moz-animation-name: ticker;
-        -webkit-animation-name: ticker;
-                animation-name: ticker;
-
-        &__headline {
-            display: flex;
-            flex-direction: column;
-            align-items:center;
-            padding: 0.6rem;
-            color: white;
-            height: 100%;
-        }
+      -webkit-animation-play-state: paused;
+      -moz-animation-play-state: paused;
+      -o-animation-play-state: paused;
+      animation-play-state: paused;
     }
+  }
+
+  .ticker {
+    height: 100%;
+    display: inline-flex;
+    white-space: nowrap;
+    padding-right: 100%;
+    box-sizing: content-box;
+
+    -moz-animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -moz-animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -moz-animation-name: ticker;
+    -webkit-animation-name: ticker;
+    animation-name: ticker;
+
+    &__headline {
+      display: flex;
+      flex-direction: column;
+      align-items:center;
+      padding: 0.6rem;
+      color: white;
+      height: 100%;
+    }
+  }
 
 
 
-   .fixture-wrapper {
-      border-radius: 5px;
+  .fixture-wrapper {
+    border-radius: 5px;
 
-     .fixture-match {
-       display: flex;
+    .fixture-match {
+      display: flex;
 
-       .home-team,
-       .away-team {
-         position: relative;
-         display: flex;
-         gap: 0.7rem;
-         justify-content: center;
-         margin: 0 10px;
-         cursor: pointer;
+      .home-team,
+      .away-team {
+        position: relative;
+        display: flex;
+        gap: 0.7rem;
+        justify-content: center;
+        margin: 0 10px;
+        cursor: pointer;
 
-         &:hover {
-           text-decoration: underline;
-         }
+        &:hover {
+          text-decoration: underline;
+        }
 
-         span {
-           pointer-events: none;
-         }
-       }
+        span {
+          pointer-events: none;
+        }
+      }
 
-       &-time {
-         justify-content: center;
-       }
-     }
-   }
+      &-time {
+        justify-content: center;
+      }
+    }
+  }
 }
 
 .modal {
@@ -119,10 +119,19 @@
     max-height: 100px;
   }
 
-  &--body , .roster {
+  &-body , .roster {
     max-height: 500px;
+    overflow: scroll;
+    @media screen and (max-width: 576px) {
+      max-height: 350px;
+    }
   }
 
+  &-dialog {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
 }
 
 .roster {
@@ -135,8 +144,8 @@
   .odds {
     gap: 0.5rem;
 
-   .odd:last-of-type span{
-        display: none;
+    .odd:last-of-type span{
+      display: none;
     }
   }
 
