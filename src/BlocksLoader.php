@@ -36,20 +36,6 @@ class BlocksLoader
                 include_once(__DIR__ . "/blocks/{$block['name']}/{$block['callback']}.php");
             }
 
-            if(
-                $block['name'] === 'bc-carousel'
-                && file_exists(WP_PLUGIN_DIR . '/' . Init::FOLDER . '/src/assets/js/bc-carousel-large-screen.js')
-            ) {
-                add_action('wp_enqueue_scripts', function(){
-                    wp_enqueue_script(
-                        'bc-carousel-large-screen',
-                        WP_PLUGIN_URL . '/' . Init::FOLDER . '/src/assets/js/bc-carousel-large-screen.js',
-                        [],
-                        false,
-                        true
-                    );
-                });
-            }
         }
     }
 }

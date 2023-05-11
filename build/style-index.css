@@ -1,1 +1,107 @@
-@keyframes ticker{0%{transform:translateZ(0);visibility:visible}to{transform:translate3d(-100%,0,0)}101%{transform:translateZ(0)}}.ticker-wrap{background-color:rgba(20,24,28,.9);bottom:0;height:100%;overflow:hidden;padding-left:100%;width:100%}.ticker-wrap:hover .ticker{animation-play-state:paused}.ticker-wrap .ticker{animation-iteration-count:infinite;animation-name:ticker;animation-timing-function:linear;box-sizing:content-box;display:inline-flex;height:100%;padding-right:100%;white-space:nowrap}.ticker-wrap .ticker__headline{align-items:center;color:#fff;display:flex;flex-direction:column;height:100%;padding:.6rem}.ticker-wrap .fixture-wrapper{border-radius:5px}.ticker-wrap .fixture-wrapper .fixture-match{display:flex}.ticker-wrap .fixture-wrapper .fixture-match .away-team,.ticker-wrap .fixture-wrapper .fixture-match .home-team{cursor:pointer;display:flex;gap:.7rem;justify-content:center;margin:0 10px;position:relative}.ticker-wrap .fixture-wrapper .fixture-match .away-team:hover,.ticker-wrap .fixture-wrapper .fixture-match .home-team:hover{text-decoration:underline}.ticker-wrap .fixture-wrapper .fixture-match .away-team span,.ticker-wrap .fixture-wrapper .fixture-match .home-team span{pointer-events:none}.ticker-wrap .fixture-wrapper .fixture-match-time{justify-content:center}.modal-content{max-height:600px!important}.modal-header{max-height:100px}.modal .roster,.modal--body{max-height:500px}.roster{display:flex;flex-wrap:wrap;height:100%;overflow-x:hidden;overflow-y:scroll}.roster .odds{gap:.5rem}.roster .odds .odd:last-of-type span{display:none}.roster .player-data .player-info{padding:1rem}
+@keyframes ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+  101% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+.ticker-wrap {
+  width: 100%;
+  bottom: 0;
+  background-color: rgba(20, 24, 28, 0.9);
+  padding-left: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.ticker-wrap:hover .ticker {
+  animation-play-state: paused;
+}
+.ticker-wrap .ticker {
+  height: 100%;
+  display: inline-flex;
+  white-space: nowrap;
+  padding-right: 100%;
+  box-sizing: content-box;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-name: ticker;
+}
+.ticker-wrap .ticker__headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.6rem;
+  color: white;
+  height: 100%;
+}
+.ticker-wrap .fixture-wrapper {
+  border-radius: 5px;
+}
+.ticker-wrap .fixture-wrapper .fixture-match {
+  display: flex;
+}
+.ticker-wrap .fixture-wrapper .fixture-match .home-team,
+.ticker-wrap .fixture-wrapper .fixture-match .away-team {
+  position: relative;
+  display: flex;
+  gap: 0.7rem;
+  justify-content: center;
+  margin: 0 10px;
+  cursor: pointer;
+}
+.ticker-wrap .fixture-wrapper .fixture-match .home-team:hover,
+.ticker-wrap .fixture-wrapper .fixture-match .away-team:hover {
+  text-decoration: underline;
+}
+.ticker-wrap .fixture-wrapper .fixture-match .home-team span,
+.ticker-wrap .fixture-wrapper .fixture-match .away-team span {
+  pointer-events: none;
+}
+.ticker-wrap .fixture-wrapper .fixture-match-time {
+  justify-content: center;
+}
+
+.modal-content {
+  max-height: 600px !important;
+}
+.modal-header {
+  max-height: 100px;
+}
+.modal-body, .modal .roster {
+  max-height: 500px;
+  overflow: scroll;
+}
+@media screen and (max-width: 576px) {
+  .modal-body, .modal .roster {
+    max-height: 350px;
+  }
+}
+.modal-dialog {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.roster {
+  display: flex;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+}
+.roster .odds {
+  gap: 0.5rem;
+}
+.roster .odds .odd:last-of-type span {
+  display: none;
+}
+.roster .player-data .player-info {
+  padding: 1rem;
+}
+
+/*# sourceMappingURL=style-index.css.map*/
