@@ -1,6 +1,8 @@
 const teams = document.querySelectorAll('.teams');
 const modalTitle = document.querySelector('.modal-title');
 const modalBody = document.querySelector('.modal-body');
+const modalClose = document.querySelector('.btn-close');
+
 teams.forEach((team) => {
     team.addEventListener('click', (e) => {
         e.preventDefault();
@@ -40,3 +42,9 @@ teams.forEach((team) => {
         }
     })
 })
+
+modalClose.addEventListener('click', (e) => {
+    e.preventDefault();
+    modalTitle.innerHTML = "";
+    modalBody.innerHTML = "";
+});
