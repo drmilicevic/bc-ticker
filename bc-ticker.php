@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:       BC Ticker
- * Description:       BC Ticker block
+ * Description:       BC Thicker block
  * Requires at least: 5.7
  * Requires PHP:      7.0
  * Version:           0.1.0
