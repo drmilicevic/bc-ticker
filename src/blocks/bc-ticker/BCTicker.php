@@ -199,8 +199,19 @@ class BCTicker
             'teamId' => $teamId,
         ];
 
-        $teamRosterGet = wp_remote_get($url . http_build_query($params));
-        $teamRoster = wp_remote_retrieve_body($teamRosterGet);
+        $teamRoster = get_transient( $url . http_build_query($params) );
+
+        if ( false === $teamRoster ) {
+            try {
+                $teamRosterGet = wp_remote_get($url . http_build_query($params));
+                $teamRoster = wp_remote_retrieve_body($teamRosterGet);
+                set_transient( $url . http_build_query($params), $teamRoster, 2 * HOUR_IN_SECONDS );
+            } catch (Exception $e) {
+                $response = ['error' => $e->getMessage()];
+                die(json_encode($response));
+            }
+        }
+
         $team = json_decode($teamRoster);
         $teamPlayers = $team->result[0]->players;
 
@@ -223,8 +234,6 @@ class BCTicker
             'matchId' => $matchId,
         ];
         
-       
-      
         $matchOddsBody = get_transient( $url . http_build_query($params) );
 
         if ( false === $matchOddsBody ) {
