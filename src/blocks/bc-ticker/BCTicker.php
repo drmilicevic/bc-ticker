@@ -179,18 +179,14 @@ class BCTicker
             'teamId' => $teamId,
         ];
 
-        // $teamRoster = get_transient( $url . http_build_query($params) );
 
-        // if ( false === $teamRoster ) {
-        //     try {
-                $teamRosterGet = wp_remote_get($url . http_build_query($params));
-                $teamRoster = wp_remote_retrieve_body($teamRosterGet);
-                // set_transient( $url . http_build_query($params), $teamRoster, 2 * HOUR_IN_SECONDS );
-        //     } catch (Exception $e) {
-        //         $response = ['error' => $e->getMessage()];
-        //         die(json_encode($response));
-        //     }
-        // }
+        try {
+            $teamRosterGet = wp_remote_get($url . http_build_query($params));
+            $teamRoster = wp_remote_retrieve_body($teamRosterGet);
+        } catch (Exception $e) {
+            $response = ['error' => $e->getMessage()];
+            die(json_encode($response));
+        }
 
         $team = json_decode($teamRoster);
         $teamPlayers = $team->result[0]->players;
@@ -213,19 +209,14 @@ class BCTicker
             'APIkey' => $this->apiKey,
             'matchId' => $matchId,
         ];
-        
-        // $matchOddsBody = get_transient( $url . http_build_query($params) );
 
-        // if ( false === $matchOddsBody ) {
-        //     try {
-                $matchOddsGet = wp_remote_get($url . http_build_query($params));
-                $matchOddsBody = wp_remote_retrieve_body($matchOddsGet);
-                // set_transient( $url . http_build_query($params), $matchOddsBody, 2 * HOUR_IN_SECONDS );
-        //     } catch (Exception $e) {
-        //         $response = ['error' => $e->getMessage()];
-        //         die(json_encode($response));
-        //     }
-        // }
+        try {
+            $matchOddsGet = wp_remote_get($url . http_build_query($params));
+            $matchOddsBody = wp_remote_retrieve_body($matchOddsGet);
+        } catch (Exception $e) {
+            $response = ['error' => $e->getMessage()];
+            die(json_encode($response));
+        }
 
         $matchOddsJson = json_decode($matchOddsBody);
         $rawOdds = $matchOddsJson->result->$matchId->$bet;

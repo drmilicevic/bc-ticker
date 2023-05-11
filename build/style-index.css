@@ -72,12 +72,11 @@
 .modal-header {
   max-height: 100px;
 }
-.modal-body, .modal .roster {
+.modal .roster {
   max-height: 500px;
-  overflow: scroll;
 }
 @media screen and (max-width: 576px) {
-  .modal-body, .modal .roster {
+  .modal .roster {
     max-height: 350px;
   }
 }
