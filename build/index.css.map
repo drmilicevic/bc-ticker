@@ -1,1 +1,0 @@
-{"version":3,"file":"index.css","mappings":";;;AACI;EACI;ACAR,C","sources":["webpack://bc-ticker/./src/blocks/bc-ticker/editor.scss","webpack://bc-ticker/./src/editor.scss"],"sourcesContent":[".modal {\n    .btn-close {\n        display: none;\n    }\n}",".modal .btn-close {\n  display: none;\n}"],"names":[],"sourceRoot":""}
