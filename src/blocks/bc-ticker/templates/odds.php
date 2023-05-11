@@ -2,11 +2,11 @@
     <?php
         foreach ($odds as $key => $value) {
             ?>
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
                 <div class="p-1 odds d-flex">
                     <?php echo $key; ?>
                     <?php
-                    if (is_array($value)) :
+                    if (is_array($value)) {
                         foreach ($value as $val) :
                           ?>
                             <div class="odd">
@@ -16,11 +16,15 @@
                            </div>
                         <?php
                         endforeach;
-                    endif;
+                    }
                     ?>
                 </div>
             </div>
             <?php
+        }
+
+        if(empty($odds)){
+            echo 'There are no odds to display';
         }
     ?>
 </div>
