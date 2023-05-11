@@ -14,7 +14,13 @@ class BCTicker
         add_action('wp_ajax_bc_get_countries', [$this, 'getCountries']);
         add_action('wp_ajax_bc_get_leagues', [$this, 'getLeagues']);
         add_action('wp_ajax_bc_get_matches', [$this, 'getMatches']);
+        add_action('wp_ajax_bc_get_roster',[$this, 'getTeamsRoster']);
+        add_action('wp_ajax_nopriv_bc_get_roster',[$this, 'getTeamsRoster']);
+        add_action('wp_ajax_bc_get_basketball_odds',[$this, 'getBasketballOdds']);
+        add_action('wp_ajax_nopriv_bc_get_basketball_odds',[$this, 'getBasketballOdds']);
     }
+
+
     public function registerBlock()
     {
         if (function_exists('register_block_type') && class_exists('WP_Block_Type_Registry')) {
@@ -48,9 +54,20 @@ class BCTicker
             'APIkey' => $this->apiKey
         ];
 
-        $countries = wp_remote_get($url . http_build_query($params));
+        $data = get_transient( $url );
 
-        wp_send_json_success(wp_remote_retrieve_body($countries), 200);
+        if ( false === $data ) {
+            try {
+                $countries = wp_remote_get($url . http_build_query($params));
+                $data = wp_remote_retrieve_body($countries);
+                set_transient( $url, $data, 0 );
+            } catch (Exception $e) {
+                $response = ['error' => $e->getMessage()];
+                die(json_encode($response));
+            }
+        }
+
+        wp_send_json_success($data, 200);
     }
 
     public function getLeagues()
@@ -63,20 +80,31 @@ class BCTicker
             'countryId' => $_POST['country']
         ];
 
-        $leagues = wp_remote_get($url . http_build_query($params));
+        $data = get_transient( $url . http_build_query($params) );
 
-        wp_send_json_success(wp_remote_retrieve_body($leagues), 200);
+        if ( false === $data ) {
+            try {
+                $leagues = wp_remote_get($url . http_build_query($params));
+                $data = wp_remote_retrieve_body($leagues);
+                set_transient( $url . http_build_query($params), $data, 0 );
+            } catch (Exception $e) {
+                $response = ['error' => $e->getMessage()];
+                die(json_encode($response));
+            }
+        }
+
+        wp_send_json_success($data, 200);
     }
 
     public function getMatches() {
         $sport = $_POST['sport'] ?? 'football';
-        $country = $_POST['country'] ?? '41';
-        $league = $_POST['league'] ?? null;
-        $scrollamount = $_POST['scrollamount'] ?? '';
+        $country = $_POST['country'] ?? '44';
+        $league = $_POST['league'] ?? '152';
+        $scrollamount = $_POST['scrollamount'] ?? '80';
         $bgColor = $_POST['bgColor'] ?? '';
         $fontSize = $_POST['fontSize'] ?? '12';
         $textColor = $_POST['textColor'] ?? '';
-        $nextNumberOfDays = $_POST['nextNumberOfDays'] ?? '2';
+        $nextNumberOfDays = $_POST['nextNumberOfDays'] ?? '5';
 
         $url = $this->apiUrl . $sport . '/?';
 
@@ -87,9 +115,19 @@ class BCTicker
             'from' => date("Y-m-d"),
             'to' => date('Y-m-d', strtotime( "+" . $nextNumberOfDays . " days"))
         ];
-        $fixtures = wp_remote_get($url . http_build_query($params));
 
-        $allFixtures = wp_remote_retrieve_body($fixtures);
+        $allFixtures = get_transient( $url . http_build_query($params) );
+        if ( false === $allFixtures ) {
+
+            try {
+                $fixtures = wp_remote_get($url . http_build_query($params));
+                $allFixtures = wp_remote_retrieve_body($fixtures);
+                set_transient( $url . http_build_query($params), $allFixtures, 12 * HOUR_IN_SECONDS );
+            } catch (Exception $e) {
+                $response = ['error' => $e->getMessage()];
+                die(json_encode($response));
+            }
+        }
 
         ob_start();
 
@@ -101,13 +139,13 @@ class BCTicker
     public function render($attributes)
     {
         $sport = $attributes['sport'] ?? 'football';
-        $country = $attributes['country'] ?? '41';
-        $league = $attributes['league'] ?? '';
-        $scrollamount = $attributes['scrollamount'] ?? '';
+        $country = $attributes['country'] ?? '44';
+        $league = $attributes['league'] ?? '152';
+        $scrollamount = $attributes['scrollamount'] ?? '80';
         $bgColor = $attributes['bgColor'] ?? '';
         $fontSize = $attributes['fontSize'] ?? '';
         $textColor = $attributes['textColor'] ?? '';
-        $nextNumberOfDays = $attributes['nextNumberOfDays'] ?? '30';
+        $nextNumberOfDays = $attributes['nextNumberOfDays'] ?? '5';
 
         $url = $this->apiUrl . $sport . '/?';
 
@@ -118,9 +156,19 @@ class BCTicker
             'from' => date("Y-m-d"),
             'to' => date('Y-m-d', strtotime( "+" . $nextNumberOfDays . " days"))
         ];
-        $fixtures = wp_remote_get($url . http_build_query($params));
 
-        $allFixtures = wp_remote_retrieve_body($fixtures);
+        $allFixtures = get_transient( $url . http_build_query($params) );
+
+        if ( false === $allFixtures ) {
+            try {
+                $fixtures = wp_remote_get($url . http_build_query($params));
+                $allFixtures = wp_remote_retrieve_body($fixtures);
+                set_transient( $url . http_build_query($params), $allFixtures, 2 * HOUR_IN_SECONDS );
+            } catch (Exception $e) {
+                $response = ['error' => $e->getMessage()];
+                die(json_encode($response));
+            }
+        }
 
         ob_start();
 
@@ -139,6 +187,84 @@ class BCTicker
 
         wp_send_json_success([
             'sports' => $sports
+        ]);
+    }
+
+    public function getTeamsRoster() {
+        $teamId = $_POST['teamId'];
+        $url = $this->apiUrl . 'football/?';
+        $params = [
+            'met' => 'Teams',
+            'APIkey' => $this->apiKey,
+            'teamId' => $teamId,
+        ];
+
+        $teamRoster = get_transient( $url . http_build_query($params) );
+
+        if ( false === $teamRoster ) {
+            try {
+                $teamRosterGet = wp_remote_get($url . http_build_query($params));
+                $teamRoster = wp_remote_retrieve_body($teamRosterGet);
+                set_transient( $url . http_build_query($params), $teamRoster, 2 * HOUR_IN_SECONDS );
+            } catch (Exception $e) {
+                $response = ['error' => $e->getMessage()];
+                die(json_encode($response));
+            }
+        }
+
+        $team = json_decode($teamRoster);
+        $teamPlayers = $team->result[0]->players;
+
+        ob_start();
+
+        include("templates/player.php");
+
+        $output = ob_get_clean();
+
+        wp_send_json_success(['output'=> $output]);
+    }
+
+    public function getBasketballOdds() {
+        $bet = "Home/Away";
+        $matchId = $_POST['matchId'];
+        $url = $this->apiUrl . 'basketball/?';
+        $params = [
+            'met' => 'Odds',
+            'APIkey' => $this->apiKey,
+            'matchId' => $matchId,
+        ];
+        
+        $matchOddsBody = get_transient( $url . http_build_query($params) );
+
+        if ( false === $matchOddsBody ) {
+            try {
+                $matchOddsGet = wp_remote_get($url . http_build_query($params));
+                $matchOddsBody = wp_remote_retrieve_body($matchOddsGet);
+                set_transient( $url . http_build_query($params), $matchOddsBody, 2 * HOUR_IN_SECONDS );
+            } catch (Exception $e) {
+                $response = ['error' => $e->getMessage()];
+                die(json_encode($response));
+            }
+        }
+
+        $matchOddsJson = json_decode($matchOddsBody);
+        $rawOdds = $matchOddsJson->result->$matchId->$bet;
+
+        $homeOdds = (array)$rawOdds->Home;
+        $awayOdds = (array)$rawOdds->Away;
+        $odds = array_merge_recursive($homeOdds, $awayOdds);
+
+        ob_start();
+
+        include("templates/odds.php");
+
+        $output = ob_get_clean();
+
+        wp_send_json_success([
+            'output'=> $output,
+            'matchId' => $matchId,
+            'matchOddsBody' => $odds,
+            'result' => $result
         ]);
     }
 }

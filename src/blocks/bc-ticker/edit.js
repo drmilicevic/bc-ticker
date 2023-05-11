@@ -30,29 +30,29 @@ const Edit = ({attributes, setAttributes}) => {
     ];
 
     useEffect(()=> {
-    if(attributes.sport === 'football' || attributes.sport === 'basketball') {
-        fetch(ajaxurl, {
-        method: "POST",
-        headers: new Headers( {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        } ),
-        body: `action=bc_get_countries&sport=${attributes.sport}`,
+    if(attributes.sport) {
+      fetch(ajaxurl, {
+      method: "POST",
+      headers: new Headers( {
+          'Content-Type': 'application/x-www-form-urlencoded',
+      } ),
+      body: `action=bc_get_countries&sport=${attributes.sport}`,
     })
-        .then((response) => response.json())
-        .then(result => {
-        let wholeResult = JSON.parse(result.data);
-        wholeResult = wholeResult.result.map(country => {
-            return { value: country.country_key, label: country.country_name }
-        })
-        wholeResult.unshift({ value: 0, label: "Select Country"})
-        setCountries(wholeResult);
-        });
+      .then((response) => response.json())
+      .then(result => {
+      let wholeResult = JSON.parse(result.data);
+      wholeResult = wholeResult.result.map(country => {
+          return { value: country.country_key, label: country.country_name }
+      })
+      wholeResult.unshift({ value: 0, label: "Select Country"})
+      setCountries(wholeResult);
+      });
     }
     }, [attributes.sport]);
 
     useEffect(() => {
     if(attributes.sport && attributes.country != 0) {
-        fetch(ajaxurl,
+      fetch(ajaxurl,
         {
             method: "POST",
             headers: new Headers( {
@@ -69,40 +69,39 @@ const Edit = ({attributes, setAttributes}) => {
             wholeResult.unshift({ value: 0, label: "Select League"})
             setLeagues(wholeResult)
         });
-        }
+      }
     },[attributes.country]);
 
     useEffect(() => {
       fetch(ajaxurl,
         {
-        method: "POST",
-        headers: new Headers( {
+          method: "POST",
+          headers: new Headers( {
             'Content-Type': 'application/x-www-form-urlencoded',
-        } ),
-        body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}&scrollamount=${attributes.scrollamount}&bgColor=${attributes.bgColor}&fontSize=${attributes.fontSize}&textColor=${attributes.textColor}&nextNumberOfDays=${attributes.nextNumberOfDays}`,
-        })
-        .then((response) => response.json())
-        .then(result => {
-        setOutput(result);
+          } ),
+          body: `action=bc_get_matches&sport=${attributes.sport}&country=${attributes.country}&league=${attributes.league}&scrollamount=${attributes.scrollamount}&bgColor=${attributes.bgColor}&fontSize=${attributes.fontSize}&textColor=${attributes.textColor}&nextNumberOfDays=${attributes.nextNumberOfDays}`,
+          })
+          .then((response) => response.json())
+          .then(result => {
+          setOutput(result);
         });
     }, [attributes.sport, attributes.country, attributes.league, attributes.debounce]);
 
   return ([
     <div dangerouslySetInnerHTML={{__html: output}}/>,
     <InspectorControls>
-      <PanelBody>
+      <PanelBody title="Date Settings" initialOpen={ true }>
         <SelectControl
           label="Sport"
           value={ attributes.sport }
           options={ [
             { label: 'Football', value: 'football' },
-            { label: 'Tennis', value: 'tennis' },
             { label: 'Basketball', value: 'basketball' },
           ] }
           onChange={ ( sport ) => setAttributes({ sport }) }
           __nextHasNoMarginBottom
         />
-        {(attributes.sport === 'football' || attributes.sport === 'basketball') && <SelectControl
+        {(attributes.sport) && <SelectControl
           label="Countries"
           value={ attributes.country }
           options={ countries }
@@ -121,6 +120,8 @@ const Edit = ({attributes, setAttributes}) => {
           max={ 14 }
           onChange={ ( nextNumberOfDays ) => debounce('nextNumberOfDays', nextNumberOfDays)}
         />
+      </PanelBody>
+      <PanelBody title="Slider Settings" initialOpen={ false }>
         <RangeControl
           label="Slider Speed"
           value={ attributes.scrollamount }
@@ -128,6 +129,16 @@ const Edit = ({attributes, setAttributes}) => {
           min={ 20 }
           max={ 200 }
         />
+        <p>Font Size</p>
+        <FontSizePicker
+            value={ attributes.fontSize }
+            fontSizes={ preSetFontSizes }
+            __nextHasNoMarginBottom
+            fallbackFontSize={ 12 }
+            onChange={ ( fontSize ) => debounce('fontSize', fontSize) }
+        />
+      </PanelBody>
+      <PanelBody title="Color Settings" initialOpen={ false }>
         <p>Background Color</p>
         <ColorPicker
           color={attributes.bgColor}
@@ -139,13 +150,6 @@ const Edit = ({attributes, setAttributes}) => {
             color={attributes.textColor}
             onChange={( textColor ) => debounce('textColor', textColor) }
             enableAlpha
-        />
-        <FontSizePicker
-            value={ attributes.fontSize }
-            fontSizes={ preSetFontSizes }
-            __nextHasNoMarginBottom
-            fallbackFontSize={ 12 }
-            onChange={( fontSize ) => setAttributes( { fontSize } )}
         />
       </PanelBody>
     </InspectorControls>
