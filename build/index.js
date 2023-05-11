@@ -284,7 +284,10 @@ const Edit = _ref => {
     dangerouslySetInnerHTML: {
       __html: output
     }
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["PanelBody"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["SelectControl"], {
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__["InspectorControls"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["PanelBody"], {
+    title: "Date Settings",
+    initialOpen: true
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["SelectControl"], {
     label: "Sport",
     value: attributes.sport,
     options: [{
@@ -318,13 +321,25 @@ const Edit = _ref => {
     min: 1,
     max: 14,
     onChange: nextNumberOfDays => debounce('nextNumberOfDays', nextNumberOfDays)
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["RangeControl"], {
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["PanelBody"], {
+    title: "Slider Settings",
+    initialOpen: false
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["RangeControl"], {
     label: "Slider Speed",
     value: attributes.scrollamount,
     onChange: scrollamount => debounce('scrollamount', scrollamount),
     min: 20,
     max: 200
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Background Color"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["ColorPicker"], {
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Font Size"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["FontSizePicker"], {
+    value: attributes.fontSize,
+    fontSizes: preSetFontSizes,
+    __nextHasNoMarginBottom: true,
+    fallbackFontSize: 12,
+    onChange: fontSize => debounce('fontSize', fontSize)
+  })), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["PanelBody"], {
+    title: "Color Settings",
+    initialOpen: false
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", null, "Background Color"), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["ColorPicker"], {
     color: attributes.bgColor,
     onChange: bgColor => debounce('bgColor', bgColor),
     enableAlpha: true
@@ -332,14 +347,6 @@ const Edit = _ref => {
     color: attributes.textColor,
     onChange: textColor => debounce('textColor', textColor),
     enableAlpha: true
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__["FontSizePicker"], {
-    value: attributes.fontSize,
-    fontSizes: preSetFontSizes,
-    __nextHasNoMarginBottom: true,
-    fallbackFontSize: 12,
-    onChange: fontSize => setAttributes({
-      fontSize
-    })
   })))];
 };
 /* harmony default export */ __webpack_exports__["default"] = (Edit);
@@ -368,15 +375,15 @@ const BcTicker = {
     },
     country: {
       type: "string",
-      default: "41"
+      default: "44"
     },
     league: {
       type: "string",
-      default: ""
+      default: "152"
     },
     scrollamount: {
       type: "number",
-      default: 20
+      default: 80
     },
     bgColor: {
       type: "string",
@@ -392,7 +399,7 @@ const BcTicker = {
     },
     nextNumberOfDays: {
       type: 'number',
-      default: 2
+      default: 5
     }
   },
   edit: props => Object(_edit__WEBPACK_IMPORTED_MODULE_0__["default"])(props)

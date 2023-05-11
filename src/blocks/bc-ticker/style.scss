@@ -1,27 +1,35 @@
 @-webkit-keyframes ticker {
-    0% {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        visibility: visible;
-    }
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
 
-    100% {
-        -webkit-transform: translate3d(-100%, 0, 0);
-        transform: translate3d(-100%, 0, 0);
-    }
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+  101% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 @keyframes ticker {
-    0% {
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
-        visibility: visible;
-    }
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
 
-    100% {
-        -webkit-transform: translate3d(-100%, 0, 0);
-        transform: translate3d(-100%, 0, 0);
-    }
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+  101% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
 }
   
 .ticker-wrap {
@@ -57,7 +65,7 @@
         -moz-animation-name: ticker;
         -webkit-animation-name: ticker;
                 animation-name: ticker;
-        
+
         &__headline {
             display: flex;
             flex-direction: column;
@@ -68,32 +76,39 @@
         }
     }
 
-    .fixture-match {
-        display: flex;
 
-        .home-team,
-        .away-team {
-            position: relative;
-            display: flex;
-            gap: 0.7rem;
-            justify-content: center;
-            margin: 0 10px;
-            cursor: pointer;
 
-            &:hover {
-                text-decoration: underline;
-            }
+   .fixture-wrapper {
+      border-radius: 5px;
 
-            span {
-                pointer-events: none;
-            }
-        }
-    }
+     .fixture-match {
+       display: flex;
+
+       .home-team,
+       .away-team {
+         position: relative;
+         display: flex;
+         gap: 0.7rem;
+         justify-content: center;
+         margin: 0 10px;
+         cursor: pointer;
+
+         &:hover {
+           text-decoration: underline;
+         }
+
+         span {
+           pointer-events: none;
+         }
+       }
+
+       &-time {
+         justify-content: center;
+       }
+     }
+   }
 }
 
-
-.modal-content {
-}
 .modal {
 
   &-content {
@@ -116,6 +131,14 @@
   overflow-y: scroll;
   overflow-x: hidden;
   height: 100%;
+
+  .odds {
+    gap: 0.5rem;
+
+   .odd:last-of-type span{
+        display: none;
+    }
+  }
 
   .player-data {
     .player-info {
