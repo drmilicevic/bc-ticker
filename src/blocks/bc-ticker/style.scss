@@ -110,6 +110,7 @@
 }
 
 .modal {
+  overflow: hidden !important;
 
   &-content {
     max-height: 600px !important;
@@ -119,9 +120,8 @@
     max-height: 100px;
   }
 
-  &-body , .roster {
+  .roster {
     max-height: 500px;
-    overflow: scroll;
     @media screen and (max-width: 576px) {
       max-height: 350px;
     }

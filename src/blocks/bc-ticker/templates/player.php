@@ -8,7 +8,7 @@
         $playerAge = $player->player_age;
         $playerNumber = $player->player_number;
         ?>
-        <div class="col-6 col-sm-4 player-data">
+        <div class="col-12 col-sm-4 player-data">
             <div class="player-info">
                 <div class="player-name">Name: <?php echo $playerName?></div>
                 <div class="player-age">Age: <?php echo $playerAge?></div>

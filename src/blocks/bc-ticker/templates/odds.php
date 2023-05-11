@@ -2,7 +2,7 @@
     <?php
         foreach ($odds as $key => $value) {
             ?>
-            <div class="col-6">
+            <div class="col-12 col-sm-6">
                 <div class="p-1 odds d-flex">
                     <?php echo $key; ?>
                     <?php
