@@ -54,17 +54,12 @@ class BCTicker
             'APIkey' => $this->apiKey
         ];
 
-        $data = get_transient( $url );
-
-        if ( false === $data ) {
-            try {
-                $countries = wp_remote_get($url . http_build_query($params));
-                $data = wp_remote_retrieve_body($countries);
-                set_transient( $url, $data, 0 );
-            } catch (Exception $e) {
-                $response = ['error' => $e->getMessage()];
-                die(json_encode($response));
-            }
+        try {
+            $countries = wp_remote_get($url . http_build_query($params));
+            $data = wp_remote_retrieve_body($countries);
+        } catch (Exception $e) {
+            $response = ['error' => $e->getMessage()];
+            die(json_encode($response));
         }
 
         wp_send_json_success($data, 200);
@@ -80,17 +75,12 @@ class BCTicker
             'countryId' => $_POST['country']
         ];
 
-        $data = get_transient( $url . http_build_query($params) );
-
-        if ( false === $data ) {
-            try {
-                $leagues = wp_remote_get($url . http_build_query($params));
-                $data = wp_remote_retrieve_body($leagues);
-                set_transient( $url . http_build_query($params), $data, 0 );
-            } catch (Exception $e) {
-                $response = ['error' => $e->getMessage()];
-                die(json_encode($response));
-            }
+        try {
+            $leagues = wp_remote_get($url . http_build_query($params));
+            $data = wp_remote_retrieve_body($leagues);
+        } catch (Exception $e) {
+            $response = ['error' => $e->getMessage()];
+            die(json_encode($response));
         }
 
         wp_send_json_success($data, 200);
@@ -116,17 +106,12 @@ class BCTicker
             'to' => date('Y-m-d', strtotime( "+" . $nextNumberOfDays . " days"))
         ];
 
-        $allFixtures = get_transient( $url . http_build_query($params) );
-        if ( false === $allFixtures ) {
-
-            try {
-                $fixtures = wp_remote_get($url . http_build_query($params));
-                $allFixtures = wp_remote_retrieve_body($fixtures);
-                set_transient( $url . http_build_query($params), $allFixtures, 12 * HOUR_IN_SECONDS );
-            } catch (Exception $e) {
-                $response = ['error' => $e->getMessage()];
-                die(json_encode($response));
-            }
+        try {
+            $fixtures = wp_remote_get($url . http_build_query($params));
+            $allFixtures = wp_remote_retrieve_body($fixtures);
+        } catch (Exception $e) {
+            $response = ['error' => $e->getMessage()];
+            die(json_encode($response));
         }
 
         ob_start();
@@ -157,17 +142,12 @@ class BCTicker
             'to' => date('Y-m-d', strtotime( "+" . $nextNumberOfDays . " days"))
         ];
 
-        $allFixtures = get_transient( $url . http_build_query($params) );
-
-        if ( false === $allFixtures ) {
-            try {
-                $fixtures = wp_remote_get($url . http_build_query($params));
-                $allFixtures = wp_remote_retrieve_body($fixtures);
-                set_transient( $url . http_build_query($params), $allFixtures, 2 * HOUR_IN_SECONDS );
-            } catch (Exception $e) {
-                $response = ['error' => $e->getMessage()];
-                die(json_encode($response));
-            }
+        try {
+            $fixtures = wp_remote_get($url . http_build_query($params));
+            $allFixtures = wp_remote_retrieve_body($fixtures);
+        } catch (Exception $e) {
+            $response = ['error' => $e->getMessage()];
+            die(json_encode($response));
         }
 
         ob_start();
@@ -199,18 +179,18 @@ class BCTicker
             'teamId' => $teamId,
         ];
 
-        $teamRoster = get_transient( $url . http_build_query($params) );
+        // $teamRoster = get_transient( $url . http_build_query($params) );
 
-        if ( false === $teamRoster ) {
-            try {
+        // if ( false === $teamRoster ) {
+        //     try {
                 $teamRosterGet = wp_remote_get($url . http_build_query($params));
                 $teamRoster = wp_remote_retrieve_body($teamRosterGet);
-                set_transient( $url . http_build_query($params), $teamRoster, 2 * HOUR_IN_SECONDS );
-            } catch (Exception $e) {
-                $response = ['error' => $e->getMessage()];
-                die(json_encode($response));
-            }
-        }
+                // set_transient( $url . http_build_query($params), $teamRoster, 2 * HOUR_IN_SECONDS );
+        //     } catch (Exception $e) {
+        //         $response = ['error' => $e->getMessage()];
+        //         die(json_encode($response));
+        //     }
+        // }
 
         $team = json_decode($teamRoster);
         $teamPlayers = $team->result[0]->players;
@@ -234,18 +214,18 @@ class BCTicker
             'matchId' => $matchId,
         ];
         
-        $matchOddsBody = get_transient( $url . http_build_query($params) );
+        // $matchOddsBody = get_transient( $url . http_build_query($params) );
 
-        if ( false === $matchOddsBody ) {
-            try {
+        // if ( false === $matchOddsBody ) {
+        //     try {
                 $matchOddsGet = wp_remote_get($url . http_build_query($params));
                 $matchOddsBody = wp_remote_retrieve_body($matchOddsGet);
-                set_transient( $url . http_build_query($params), $matchOddsBody, 2 * HOUR_IN_SECONDS );
-            } catch (Exception $e) {
-                $response = ['error' => $e->getMessage()];
-                die(json_encode($response));
-            }
-        }
+                // set_transient( $url . http_build_query($params), $matchOddsBody, 2 * HOUR_IN_SECONDS );
+        //     } catch (Exception $e) {
+        //         $response = ['error' => $e->getMessage()];
+        //         die(json_encode($response));
+        //     }
+        // }
 
         $matchOddsJson = json_decode($matchOddsBody);
         $rawOdds = $matchOddsJson->result->$matchId->$bet;
