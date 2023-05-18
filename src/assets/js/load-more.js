@@ -15,8 +15,6 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 
     function loadMoreAuthorsPosts(){
-        console.log(offsetForPosts);
-        console.log(POSTS_PER_PAGE);
         const AUTHOR_ID = loadMorePosts.dataset.userId;
         let fetchArgs = {
             action : 'bc_get_more_authors_posts',
@@ -37,7 +35,6 @@ window.addEventListener('DOMContentLoaded', function () {
         })
             .then((response) => response.json())
             .then((result) => {
-                console.log(result.output);
                 // loadingAnimation.classList.remove('sx-loader');
                 if(result.output == ""){
                     loadMorePosts.remove();

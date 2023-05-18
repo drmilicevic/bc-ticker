@@ -1,8 +1,6 @@
-import { useEffect } from "@wordpress/element";
-
-const fetchAuthorsPosts = (showPosts, loadMore, author, numberOfPosts, count, setOutput2) => {
-    useEffect(() => {
+const fetchAuthorsPosts = (showPosts,setOutput, loadMore, author, numberOfPosts, count, setOutput2) => {
         if (showPosts === true) {
+            console.log(showPosts);
             fetch(ajaxurl, {
                 method: "POST",
                 headers: new Headers({
@@ -13,11 +11,11 @@ const fetchAuthorsPosts = (showPosts, loadMore, author, numberOfPosts, count, se
                 .then((response) => response.json())
                 .then(result => {
                     setOutput2(result.output);
+                    setOutput("");
                 });
         } else {
             setOutput2("");
         }
-    }, [count, showPosts]);
 };
 
 export default fetchAuthorsPosts;

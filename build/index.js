@@ -173,6 +173,103 @@ __webpack_require__.r(__webpack_exports__);
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/blocks/bc-author-card/data/Users.js":
+/*!*************************************************!*\
+  !*** ./src/blocks/bc-author-card/data/Users.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+
+const Users = _ref => {
+  let {
+    setUsers
+  } = _ref;
+  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+    fetch(ajaxurl, {
+      method: "POST",
+      headers: new Headers({
+        "Content-Type": "application/x-www-form-urlencoded"
+      }),
+      body: `action=bc_get_authors`
+    }).then(response => response.json()).then(result => {
+      let authors = result.data;
+      authors.unshift({
+        value: 0,
+        label: "Select Author"
+      });
+      setUsers(authors);
+    });
+  }, [setUsers]);
+  return null;
+};
+/* harmony default export */ __webpack_exports__["default"] = (Users);
+
+/***/ }),
+
+/***/ "./src/blocks/bc-author-card/data/fetch-author-data.js":
+/*!*************************************************************!*\
+  !*** ./src/blocks/bc-author-card/data/fetch-author-data.js ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const fetchAuthorData = (author, linkToAuthor, authorName, authorDesc, avatar, totalNumberOfPosts, authorData, setOutput, setAttributes) => {
+  if (author !== 0 && authorData) {
+    fetch(ajaxurl, {
+      method: "POST",
+      headers: new Headers({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      body: `action=bc_get_author_data&linkToAuthor=${linkToAuthor}&authorName=${authorName}&authorDesc=${authorDesc}&avatar=${avatar}&author=${author}&totalNumberOfPosts=${totalNumberOfPosts}`
+    }).then(response => response.json()).then(result => {
+      setAttributes({
+        avatar: true
+      });
+      setOutput(result.output);
+    });
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (fetchAuthorData);
+
+/***/ }),
+
+/***/ "./src/blocks/bc-author-card/data/fetch-authors-posts.js":
+/*!***************************************************************!*\
+  !*** ./src/blocks/bc-author-card/data/fetch-authors-posts.js ***!
+  \***************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const fetchAuthorsPosts = (showPosts, setOutput, loadMore, author, numberOfPosts, count, setOutput2) => {
+  if (showPosts === true) {
+    console.log(showPosts);
+    fetch(ajaxurl, {
+      method: "POST",
+      headers: new Headers({
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }),
+      body: `action=bc_get_authors_posts&loadPerClick=${loadMore}&authorId=${author}&initiallyShow=${numberOfPosts}`
+    }).then(response => response.json()).then(result => {
+      setOutput2(result.output);
+      setOutput("");
+    });
+  } else {
+    setOutput2("");
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = (fetchAuthorsPosts);
+
+/***/ }),
+
 /***/ "./src/blocks/bc-author-card/edit.js":
 /*!*******************************************!*\
   !*** ./src/blocks/bc-author-card/edit.js ***!
@@ -188,6 +285,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _data_Users__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./data/Users */ "./src/blocks/bc-author-card/data/Users.js");
+/* harmony import */ var _data_fetch_author_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./data/fetch-author-data */ "./src/blocks/bc-author-card/data/fetch-author-data.js");
+/* harmony import */ var _data_fetch_authors_posts__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./data/fetch-authors-posts */ "./src/blocks/bc-author-card/data/fetch-authors-posts.js");
+
+
+
 
 
 
@@ -222,18 +325,8 @@ const Edit = _ref => {
     });
   }, [output, output2]);
   Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    if (author != 0 && authorData) {
-      fetch(ajaxurl, {
-        method: "POST",
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        body: `action=bc_get_author_data&linkToAuthor=${linkToAuthor}&authorName=${authorName}&authorDesc=${authorDesc}&avatar=${avatar}&author=${author}&totalNumberOfPosts=${totalNumberOfPosts}`
-      }).then(response => response.json()).then(result => {
-        setOutput(result.output);
-      });
-    }
-    if (authorData === false) {
+    Object(_data_fetch_author_data__WEBPACK_IMPORTED_MODULE_4__["default"])(author, linkToAuthor, authorName, authorDesc, avatar, totalNumberOfPosts, authorData, setOutput, setAttributes);
+    if (authorData === false && showPosts === false) {
       setAttributes({
         avatar: false
       });
@@ -249,39 +342,11 @@ const Edit = _ref => {
       setAttributes({
         linkToAuthor: false
       });
-      setOutput('Select Option');
+      setOutput("Select Option");
     }
-  }, [author, linkToAuthor, authorData, avatar, authorDesc, authorName, authorDesc, totalNumberOfPosts]);
+  }, [author, showPosts, linkToAuthor, authorData, avatar, authorDesc, authorName, authorDesc, totalNumberOfPosts]);
   Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    fetch(ajaxurl, {
-      method: "POST",
-      headers: new Headers({
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }),
-      body: `action=bc_get_authors`
-    }).then(response => response.json()).then(result => {
-      let authors = result.data;
-      authors.unshift({
-        value: 0,
-        label: "Select Author"
-      });
-      setUsers(result.data);
-    });
-  }, []);
-  Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
-    if (showPosts == true) {
-      fetch(ajaxurl, {
-        method: "POST",
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }),
-        body: `action=bc_get_authors_posts&loadPerClick=${loadMore}&authorId=${author}&initiallyShow=${numberOfPosts}`
-      }).then(response => response.json()).then(result => {
-        setOutput2(result.output);
-      });
-    } else {
-      setOutput2("");
-    }
+    Object(_data_fetch_authors_posts__WEBPACK_IMPORTED_MODULE_5__["default"])(showPosts, setOutput, loadMore, author, numberOfPosts, count, setOutput2);
   }, [count, showPosts]);
   const debounce = (attributeName, attributeValue) => {
     clearTimeout(debounceTimeout);
@@ -378,6 +443,8 @@ const Edit = _ref => {
     dangerouslySetInnerHTML: {
       __html: output2
     }
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_data_Users__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    setUsers: setUsers
   })];
 };
 /* harmony default export */ __webpack_exports__["default"] = (Edit);

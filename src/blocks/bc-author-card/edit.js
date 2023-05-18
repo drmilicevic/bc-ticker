@@ -15,11 +15,28 @@ const Edit = ({attributes, setAttributes}) => {
     useEffect(() => {
         const combinedOutput = output + output2;
         setAttributes({ finalOutput: combinedOutput });
+
     }, [output, output2]);
 
-    fetchAuthorData(author, linkToAuthor, authorName, authorDesc, avatar, totalNumberOfPosts, authorData, setOutput, setAttributes);
+    useEffect(()=> {
 
-    fetchAuthorsPosts(showPosts, loadMore, author, numberOfPosts, count, setOutput2);
+        fetchAuthorData(author, linkToAuthor, authorName, authorDesc, avatar, totalNumberOfPosts, authorData, setOutput, setAttributes);
+
+        if (authorData === false && showPosts === false) {
+            setAttributes({ avatar: false })
+            setAttributes({ authorDesc: false })
+            setAttributes({ authorName: false })
+            setAttributes({ totalNumberOfPosts: false })
+            setAttributes({ linkToAuthor: false })
+            setOutput("Select Option");
+        }
+    }, [author,showPosts,linkToAuthor,authorData,avatar,authorDesc,authorName,authorDesc,totalNumberOfPosts]);
+
+    useEffect(() => {
+
+        fetchAuthorsPosts(showPosts, setOutput, loadMore, author, numberOfPosts, count, setOutput2);
+
+    }, [count, showPosts]);
 
     const debounce = (attributeName, attributeValue) => {
         clearTimeout(debounceTimeout);
