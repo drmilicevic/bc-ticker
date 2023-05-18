@@ -9,7 +9,7 @@ if (!defined('ABSPATH')) {
 class Init
 {
     public const SLUG = 'bc-theme';
-    public const FOLDER = 'bc-ticker';
+    public const FOLDER = 'bc-author-card';
     /**
      * @var false|array
      */

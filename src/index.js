@@ -5,5 +5,5 @@ import './editor.scss';
 
 const DOMAIN = 'bc-theme';
   
-import BcTicker from './blocks/bc-ticker/index';
-registerBlockType(DOMAIN + '/bc-ticker', BcTicker);
+import BcAuthorCard from './blocks/bc-author-card/index';
+registerBlockType(DOMAIN + '/bc-author-card', BcAuthorCard);

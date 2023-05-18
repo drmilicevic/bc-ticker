@@ -1,1 +1,1 @@
-{"blocks":[{"name":"bc-ticker","title":"BC Ticker","callback":"BCTicker"}],"patterns":[]}
+{"blocks":[{"name":"bc-author-card","title":"BC Author Card","callback":"BCAuthorCard"}],"patterns":[]}

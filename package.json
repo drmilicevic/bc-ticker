@@ -1,5 +1,5 @@
 {
-    "name": "bc-ticker",
+    "name": "bc-author-cards",
     "description": "Configuration for BC Gutenberg blocks",
     "version": "1.0.0",
     "scripts": {
