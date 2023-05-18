@@ -1,7 +1,9 @@
 import {InspectorControls,} from "@wordpress/block-editor";
 import {useEffect, useState} from "@wordpress/element";
 import {ToggleControl,TextControl,PanelBody,SelectControl,Button} from '@wordpress/components';
-
+import Users from "./data/Users";
+import fetchAuthorData from "./data/fetch-author-data";
+import fetchAuthorsPosts from "./data/fetch-authors-posts";
 let debounceTimeout = null;
 const Edit = ({attributes, setAttributes}) => {
     const {finalOutput,authorData,author,avatar,authorName,totalNumberOfPosts,authorDesc,showPosts,numberOfPosts,loadMore,linkToAuthor} = attributes;
@@ -15,66 +17,9 @@ const Edit = ({attributes, setAttributes}) => {
         setAttributes({ finalOutput: combinedOutput });
     }, [output, output2]);
 
-    useEffect(()=> {
-        if(author != 0 && authorData) {
-            fetch(ajaxurl, {
-                method: "POST",
-                headers: new Headers( {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                } ),
-                body: `action=bc_get_author_data&linkToAuthor=${linkToAuthor}&authorName=${authorName}&authorDesc=${authorDesc}&avatar=${avatar}&author=${author}&totalNumberOfPosts=${totalNumberOfPosts}`,
-            })
-                .then((response) => response.json())
-                .then(result => {
-                    setOutput(result.output);
-                });
-        }
+    fetchAuthorData(author, linkToAuthor, authorName, authorDesc, avatar, totalNumberOfPosts, authorData, setOutput, setAttributes);
 
-        if( authorData === false) {
-            setAttributes({ avatar: false })
-            setAttributes({ authorDesc: false })
-            setAttributes({ authorName: false })
-            setAttributes({ totalNumberOfPosts: false })
-            setAttributes({ linkToAuthor: false })
-            setOutput('Select Option');
-        }
-
-    }, [author,linkToAuthor,authorData,avatar,authorDesc,authorName,authorDesc,totalNumberOfPosts]);
-
-    useEffect(()=> {
-        fetch(ajaxurl, {
-            method: "POST",
-            headers: new Headers( {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            } ),
-            body: `action=bc_get_authors`,
-        })
-            .then((response) => response.json())
-            .then(result => {
-                let authors = result.data;
-                authors.unshift({ value: 0, label: "Select Author"})
-                setUsers(result.data);
-            });
-    }, []);
-
-    useEffect(()=> {
-        if(showPosts == true) {
-            fetch(ajaxurl, {
-                method: "POST",
-                headers: new Headers( {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                } ),
-                body: `action=bc_get_authors_posts&loadPerClick=${loadMore}&authorId=${author}&initiallyShow=${numberOfPosts}`,
-            })
-                .then((response) => response.json())
-                .then(result => {
-                    setOutput2(result.output);
-                });
-        } else {
-            setOutput2("");
-        }
-
-    }, [count,showPosts]);
+    fetchAuthorsPosts(showPosts, loadMore, author, numberOfPosts, count, setOutput2);
 
     const debounce = (attributeName, attributeValue) => {
         clearTimeout(debounceTimeout);
@@ -157,6 +102,7 @@ const Edit = ({attributes, setAttributes}) => {
                 </Button> }
             </PanelBody>
         </InspectorControls>,<div dangerouslySetInnerHTML={{__html: output2}}/>,
+        <Users setUsers={setUsers} />,
     ])
 }
 
